@@ -20,7 +20,7 @@ EditorSettings:
   m_ProjectGenerationIncludedExtensions: txt;xml;fnt;cd;asmdef;rsp;asmref
   m_ProjectGenerationRootNamespace: 
   m_EnableTextureStreamingInEditMode: 0
-  m_EnableTextureStreamingInPlayMode: 0
+  m_EnableTextureStreamingInPlayMode: 1
   m_EnableEditorAsyncCPUTextureLoading: 0
   m_AsyncShaderCompilation: 1
   m_PrefabModeAllowAutoSave: 1
