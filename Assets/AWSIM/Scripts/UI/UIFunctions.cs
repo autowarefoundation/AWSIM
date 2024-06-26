@@ -1,5 +1,8 @@
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace AWSIM.Scripts.UI
 {
@@ -30,29 +33,52 @@ namespace AWSIM.Scripts.UI
             }
         }
 
-        // Lerp UI objects height
-        public static IEnumerator LerpUIRectHeight(RectTransform uiRect, float targetHeight, float lerpValue,
-            bool willDisableAtEnd)
+        // Lerp UI Card preferred height
+        public static IEnumerator LerpUICardPreferredHeight(Button activator, LayoutElement uiElement,
+            float targetHeight, float lerpValue)
         {
             var elapsedTime = 0f;
-            var currentHeight = uiRect.sizeDelta.y;
-
+            var currentHeight = uiElement.preferredHeight;
+            SetButtonInteraction(activator, false);
             while (elapsedTime < 1f)
             {
                 elapsedTime += Time.deltaTime * lerpValue;
-                float lerpedHeight = Mathf.Lerp(currentHeight, targetHeight, elapsedTime);
-                uiRect.sizeDelta = new Vector2(uiRect.sizeDelta.x, lerpedHeight);
+                var lerpHeight = Mathf.Lerp(currentHeight, targetHeight, elapsedTime);
+                uiElement.preferredHeight = lerpHeight;
                 yield return null;
             }
 
             // Ensure the UI element has the target height
-            uiRect.sizeDelta = new Vector2(uiRect.sizeDelta.x, targetHeight);
+            uiElement.preferredHeight = targetHeight;
+            SetButtonInteraction(activator, true);
+        }
 
-            // Disable at end if wanted
-            if (willDisableAtEnd)
+        public static IEnumerator LerpRectTransformRotation(RectTransform rectTf, float targetDegrees, float lerpVal)
+        {
+            var elapsedTime = 0f;
+            var currentRotation = rectTf.localEulerAngles.z;
+            while (elapsedTime < 1f)
             {
-                uiRect.gameObject.SetActive(false);
+                elapsedTime += Time.deltaTime * lerpVal;
+                var lerpRotation = Mathf.Lerp(currentRotation, targetDegrees, elapsedTime);
+                rectTf.localEulerAngles = new Vector3(0, 0, lerpRotation);
+                yield return null;
             }
+
+            // Ensure the UI element has the target rotation
+            rectTf.localEulerAngles = new Vector3(0, 0, targetDegrees);
+        }
+
+        // Calculate the total height of a card based on the elements and spacing
+        public static float CalculateCardTotalHeight(List<RectTransform> rectTransforms, float elementSpacing)
+        {
+            return rectTransforms.Sum(rectTransform => rectTransform.sizeDelta.y + elementSpacing);
+        }
+
+        // Set the interaction of a button
+        private static void SetButtonInteraction(Button element, bool isInteractable)
+        {
+            element.interactable = isInteractable;
         }
     }
 }

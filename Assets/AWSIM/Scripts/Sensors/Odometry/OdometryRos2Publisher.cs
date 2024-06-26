@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using ROS2;
 
@@ -8,7 +6,7 @@ namespace AWSIM
     /// <summary>
     /// Convert the data output from Odometry Sensor to ROS2 msg and Publish.
     /// </summary>
-    [RequireComponent(typeof(OdometryRos2Publisher))]
+    [RequireComponent(typeof(OdometrySensor))]
     public class OdometryRos2Publisher : MonoBehaviour
     {
         /// <summary>
@@ -32,24 +30,24 @@ namespace AWSIM
             Depth = 1,
         };
 
-        IPublisher<nav_msgs.msg.Odometry> odometryPublisher;
-        nav_msgs.msg.Odometry msg;
-        geometry_msgs.msg.PoseWithCovariance pose;
-        geometry_msgs.msg.TwistWithCovariance twist;
-        std_msgs.msg.String frame_id;
-        OdometrySensor sensor;
+        private IPublisher<nav_msgs.msg.Odometry> _odometryPublisher;
+        private nav_msgs.msg.Odometry _msg;
+        private OdometrySensor _odometrySensor;
 
-        // Start is called before the first frame update
-        void Start()
+        private void Awake()
         {
-            // Get OdometrySensor component.
-            sensor = GetComponent<OdometrySensor>();
+            CreatePublisher();
+        }
 
-            // Set callback.
-            sensor.OnOutputData += Publish;
+        private void Start()
+        {
+            ConnectSensor();
+        }
 
+        private void CreatePublisher()
+        {
             // Create msg.
-            msg = new nav_msgs.msg.Odometry()
+            _msg = new nav_msgs.msg.Odometry()
             {
                 Header = new std_msgs.msg.Header()
                 {
@@ -62,57 +60,75 @@ namespace AWSIM
 
             // Create publisher.
             var qos = QosSettings.GetQoSProfile();
-            odometryPublisher = SimulatorROS2Node.CreatePublisher<nav_msgs.msg.Odometry>(Topic, qos);
+            _odometryPublisher = SimulatorROS2Node.CreatePublisher<nav_msgs.msg.Odometry>(Topic, qos);
         }
 
-        void Publish(OdometrySensor.OutputData outputData)
+        private void ConnectSensor()
+        {
+            // Get OdometrySensor component.
+            _odometrySensor = GetComponent<OdometrySensor>();
+
+            // Set callback.
+            _odometrySensor.OnOutputData += Publish;
+        }
+
+        private void Publish(OdometrySensor.OutputData outputData)
         {
             // Converts data output from Pose to ROS2 msg
             var rosPosition = outputData.Position;
             var rosRotation = outputData.Rotation;
 
             // TODO: Add double[36] covariance
-            msg.Pose.Pose.Position.X = rosPosition.x;
-            msg.Pose.Pose.Position.Y = rosPosition.y;
-            msg.Pose.Pose.Position.Z = rosPosition.z;
+            _msg.Pose.Pose.Position.X = rosPosition.x;
+            _msg.Pose.Pose.Position.Y = rosPosition.y;
+            _msg.Pose.Pose.Position.Z = rosPosition.z;
 
-            msg.Pose.Pose.Orientation.X = rosRotation.x;
-            msg.Pose.Pose.Orientation.Y = rosRotation.y;
-            msg.Pose.Pose.Orientation.Z = rosRotation.z;
-            msg.Pose.Pose.Orientation.W = rosRotation.w;
+            _msg.Pose.Pose.Orientation.X = rosRotation.x;
+            _msg.Pose.Pose.Orientation.Y = rosRotation.y;
+            _msg.Pose.Pose.Orientation.Z = rosRotation.z;
+            _msg.Pose.Pose.Orientation.W = rosRotation.w;
 
             // Converts data output from Twist to ROS2 msg
             var rosLinearVelocity = ROS2Utility.UnityToRosPosition(outputData.linearVelocity);
             var rosAngularVelocity = ROS2Utility.UnityToRosAngularVelocity(outputData.angularVelocity);
-            msg.Twist.Twist.Linear.X = rosLinearVelocity.x;
-            msg.Twist.Twist.Linear.Y = rosLinearVelocity.y;
-            msg.Twist.Twist.Linear.Z = rosLinearVelocity.z;
+            _msg.Twist.Twist.Linear.X = rosLinearVelocity.x;
+            _msg.Twist.Twist.Linear.Y = rosLinearVelocity.y;
+            _msg.Twist.Twist.Linear.Z = rosLinearVelocity.z;
 
-            msg.Twist.Twist.Angular.X = rosAngularVelocity.x;
-            msg.Twist.Twist.Angular.Y = rosAngularVelocity.y;
-            msg.Twist.Twist.Angular.Z = rosAngularVelocity.z;
+            _msg.Twist.Twist.Angular.X = rosAngularVelocity.x;
+            _msg.Twist.Twist.Angular.Y = rosAngularVelocity.y;
+            _msg.Twist.Twist.Angular.Z = rosAngularVelocity.z;
 
             // Add covariance 6x6
             const int size = 6;
             for (int i = 0; i < size; i++)
             {
-                msg.Pose.Covariance[i * size + i] = 1;
-                msg.Twist.Covariance[i * size + i] = 1;
+                _msg.Pose.Covariance[i * size + i] = 1;
+                _msg.Twist.Covariance[i * size + i] = 1;
             }
 
             // Update msg header.
-            var header = msg as MessageWithHeader;
+            var header = _msg as MessageWithHeader;
             SimulatorROS2Node.UpdateROSTimestamp(ref header);
 
-            msg.Child_frame_id = "base_link";
+            _msg.Child_frame_id = "base_link";
 
             // Publish to ROS2.
-            odometryPublisher.Publish(msg);
+            _odometryPublisher.Publish(_msg);
         }
 
-        void OnDestroy()
+        public void ReInitializePublisher()
         {
-            SimulatorROS2Node.RemovePublisher<nav_msgs.msg.Odometry>(odometryPublisher);
+            CreatePublisher();
+            ConnectSensor();
+        }
+
+        // Note: It takes some time for topic to be removed from Ros2Topic list.
+        // Sometimes it doesn't remove the topic.
+        private void OnDestroy()
+        {
+            _odometrySensor.OnOutputData -= Publish;
+            SimulatorROS2Node.RemovePublisher<nav_msgs.msg.Odometry>(_odometryPublisher);
         }
     }
 }

@@ -5,7 +5,7 @@ namespace AWSIM.Scripts.UI
 {
     public class UIInteractionHandler : MonoBehaviour, IDragHandler, IPointerDownHandler
     {
-        private Vector2 initialDragPointOffset;
+        private Vector2 _initialDragPointOffset;
 
         public void OnPointerDown(PointerEventData eventData)
         {
@@ -15,7 +15,7 @@ namespace AWSIM.Scripts.UI
             // Store the initial offset from the pointer to the object's anchor point in local canvas coordinates
             RectTransformUtility.ScreenPointToLocalPointInRectangle(canvasRectTransform, eventData.position,
                 canvas.worldCamera, out var localPointerPosition);
-            initialDragPointOffset = localPointerPosition - ((RectTransform)transform).anchoredPosition;
+            _initialDragPointOffset = localPointerPosition - ((RectTransform)transform).anchoredPosition;
         }
 
         public void OnDrag(PointerEventData eventData)
@@ -28,7 +28,8 @@ namespace AWSIM.Scripts.UI
                 canvas.worldCamera, out var localPointerPosition);
 
             // Apply the initial offset to keep the drag point consistent
-            ((RectTransform)transform).anchoredPosition = localPointerPosition - initialDragPointOffset;
+            ((RectTransform)transform).anchoredPosition = localPointerPosition - _initialDragPointOffset;
+
         }
     }
 }

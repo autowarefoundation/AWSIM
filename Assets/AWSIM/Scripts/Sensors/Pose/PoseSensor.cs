@@ -65,7 +65,6 @@ namespace AWSIM
             var rosPosition = ROS2Utility.UnityToRosPosition(m_transform.position);
             outputData.Position = rosPosition + Environment.Instance.MgrsOffsetPosition;     // TODO: Handled in Unity coordinate system
                                                                                              // ros gnss sensor's pos + mgrs offset pos.
-
             var rosRotation = ROS2Utility.UnityToRosRotation(m_transform.rotation);
             outputData.Rotation = rosRotation;
 

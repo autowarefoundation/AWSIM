@@ -1,3 +1,4 @@
+using System;
 using ROS2;
 using UnityEngine;
 
@@ -10,7 +11,6 @@ namespace AWSIM
     public class CameraRos2Publisher : MonoBehaviour
     {
         [Header("ROS Topic parameters")]
-
         /// <summary>
         /// Topic name for Image msg.
         /// </summary>
@@ -38,35 +38,61 @@ namespace AWSIM
         };
 
         // Publishers
-        IPublisher<sensor_msgs.msg.Image> imagePublisher;
-        IPublisher<sensor_msgs.msg.CameraInfo> cameraInfoPublisher;
-        sensor_msgs.msg.Image imageMsg;
-        sensor_msgs.msg.CameraInfo cameraInfoMsg;
+        private IPublisher<sensor_msgs.msg.Image> _imagePublisher;
+        private IPublisher<sensor_msgs.msg.CameraInfo> _cameraInfoPublisher;
+        private sensor_msgs.msg.Image _imageMsg;
+        private sensor_msgs.msg.CameraInfo _cameraInfoMsg;
 
-        CameraSensor sensor;
+        private CameraSensor _cameraSensor;
 
-        void Start()
+        private void Awake()
         {
-            sensor = GetComponent<CameraSensor>();
-            if (sensor == null)
-            {
-                throw new MissingComponentException("No active CameraSensor component found.");
-            }
+            CreatePublisher();
+        }
 
-            // Set callback
-            sensor.OnOutputData += UpdateMessagesAndPublish;
+        private void Start()
+        {
+            ConnectSensor();
+        }
 
+        private void CreatePublisher()
+        {
             // Initialize msgs
-            imageMsg = InitializeEmptyImageMsg();
-            cameraInfoMsg = InitializeEmptyCameraInfoMsg();
+            _imageMsg = InitializeEmptyImageMsg();
+            _cameraInfoMsg = InitializeEmptyCameraInfoMsg();
 
             // Create publishers
             var qos = qosSettings.GetQoSProfile();
-            imagePublisher = SimulatorROS2Node.CreatePublisher<sensor_msgs.msg.Image>(imageTopic, qos);
-            cameraInfoPublisher = SimulatorROS2Node.CreatePublisher<sensor_msgs.msg.CameraInfo>(cameraInfoTopic, qos);
+            _imagePublisher = SimulatorROS2Node.CreatePublisher<sensor_msgs.msg.Image>(imageTopic, qos);
+            _cameraInfoPublisher = SimulatorROS2Node.CreatePublisher<sensor_msgs.msg.CameraInfo>(cameraInfoTopic, qos);
         }
 
-        void UpdateMessagesAndPublish(CameraSensor.OutputData outputData)
+        private void ConnectSensor()
+        {
+            _cameraSensor = GetComponent<CameraSensor>();
+            // if (_cameraSensor == null)
+            // {
+            //     throw new MissingComponentException("No active CameraSensor component found.");
+            // }
+
+            // Set callback
+            _cameraSensor.OnOutputData += UpdateMessagesAndPublish;
+        }
+
+        public void ReInitializePublisher()
+        {
+            CreatePublisher();
+            ConnectSensor();
+        }
+
+        private void OnDestroy()
+        {
+            _cameraSensor.OnOutputData -= UpdateMessagesAndPublish;
+            SimulatorROS2Node.RemovePublisher<sensor_msgs.msg.Image>(_imagePublisher);
+            SimulatorROS2Node.RemovePublisher<sensor_msgs.msg.CameraInfo>(_cameraInfoPublisher);
+        }
+
+        private void UpdateMessagesAndPublish(CameraSensor.OutputData outputData)
         {
             if (!SimulatorROS2Node.Ok())
             {
@@ -79,57 +105,57 @@ namespace AWSIM
 
             // Update msgs timestamp, timestamps should be synchronized in order to connect image and camera_info msgs
             var timeMsg = SimulatorROS2Node.GetCurrentRosTime();
-            imageMsg.Header.Stamp = timeMsg;
-            cameraInfoMsg.Header.Stamp = timeMsg;
+            _imageMsg.Header.Stamp = timeMsg;
+            _cameraInfoMsg.Header.Stamp = timeMsg;
 
             // Publish to ROS2
-            imagePublisher.Publish(imageMsg);
-            cameraInfoPublisher.Publish(cameraInfoMsg);
+            _imagePublisher.Publish(_imageMsg);
+            _cameraInfoPublisher.Publish(_cameraInfoMsg);
         }
 
         private void UpdateImageMsg(CameraSensor.OutputData data)
         {
-            if (imageMsg.Width != data.cameraParameters.width || imageMsg.Height != data.cameraParameters.height)
+            if (_imageMsg.Width != data.cameraParameters.width || _imageMsg.Height != data.cameraParameters.height)
             {
-                imageMsg.Width = (uint)data.cameraParameters.width;
-                imageMsg.Height = (uint)data.cameraParameters.height;
-                imageMsg.Step = (uint)(data.cameraParameters.width * 3);
+                _imageMsg.Width = (uint)data.cameraParameters.width;
+                _imageMsg.Height = (uint)data.cameraParameters.height;
+                _imageMsg.Step = (uint)(data.cameraParameters.width * 3);
 
-                imageMsg.Data = new byte[data.cameraParameters.height * data.cameraParameters.width * 3];
+                _imageMsg.Data = new byte[data.cameraParameters.height * data.cameraParameters.width * 3];
             }
 
-            imageMsg.Data = data.imageDataBuffer;
+            _imageMsg.Data = data.imageDataBuffer;
         }
 
         private void UpdateCameraInfoMsg(CameraSensor.CameraParameters cameraParameters)
         {
-            if (cameraInfoMsg.Width != cameraParameters.width || cameraInfoMsg.Height != cameraParameters.height)
+            if (_cameraInfoMsg.Width != cameraParameters.width || _cameraInfoMsg.Height != cameraParameters.height)
             {
-                cameraInfoMsg.Width = (uint)cameraParameters.width;
-                cameraInfoMsg.Height = (uint)cameraParameters.height;
+                _cameraInfoMsg.Width = (uint)cameraParameters.width;
+                _cameraInfoMsg.Height = (uint)cameraParameters.height;
             }
 
             // Update distortion parameters
             var D = cameraParameters.getDistortionParameters();
-            if (!D.Equals(cameraInfoMsg.D))
+            if (!D.Equals(_cameraInfoMsg.D))
             {
-                cameraInfoMsg.D = cameraParameters.getDistortionParameters();
+                _cameraInfoMsg.D = cameraParameters.getDistortionParameters();
             }
 
             // Update camera matrix
             var K = cameraParameters.getCameraMatrix();
-            if (!K.Equals(cameraInfoMsg.K))
+            if (!K.Equals(_cameraInfoMsg.K))
             {
                 for (int i = 0; i < K.Length; i++)
-                    cameraInfoMsg.K[i] = K[i];
+                    _cameraInfoMsg.K[i] = K[i];
             }
 
             // Update projection matrix
             var P = cameraParameters.getProjectionMatrix();
-            if (!P.Equals(cameraInfoMsg.P))
+            if (!P.Equals(_cameraInfoMsg.P))
             {
                 for (int i = 0; i < P.Length; i++)
-                    cameraInfoMsg.P[i] = P[i];
+                    _cameraInfoMsg.P[i] = P[i];
             }
         }
 
@@ -168,10 +194,12 @@ namespace AWSIM
             };
 
             // Set the rectification matrix for monocular camera
-            var R = new double[] {
+            var R = new double[]
+            {
                 1.0, 0.0, 0.0,
                 0.0, 1.0, 0.0,
-                0.0, 0.0, 1.0};
+                0.0, 0.0, 1.0
+            };
 
             for (int i = 0; i < R.Length; i++)
                 message.R[i] = R[i];

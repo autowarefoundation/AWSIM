@@ -48,7 +48,7 @@ namespace AWSIM.Scripts.UI
             InitialQualityLevel();
 
             // Populate dropdown with quality settings
-            _dropdown = GetComponentInChildren<Dropdown>();
+            _dropdown = GetComponent<Dropdown>();
             _dropdown.options.Clear();
             foreach (var option in _dropdownOptions)
             {

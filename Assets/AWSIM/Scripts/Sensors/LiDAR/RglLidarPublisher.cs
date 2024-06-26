@@ -45,21 +45,29 @@ namespace AWSIM
         private RGLNodeSequence rglSubgraphInstanceId;
         private RGLNodeSequence rglSubgraphRadar;
 
-        private bool didStart = false;
+        private bool _didStart;
 
         private void Awake()
         {
-            rglSubgraphUnity2Ros = new RGLNodeSequence()
-                .AddNodePointsTransform("UNITY_TO_ROS", ROS2.Transformations.Unity2RosMatrix4x4());
+            CreatePublisher();
         }
 
-        private void OnEnable()
+        private void Start()
         {
+            ConnectSensor();
+        }
+
+        private void CreatePublisher()
+        {
+            rglSubgraphUnity2Ros = new RGLNodeSequence()
+                .AddNodePointsTransform("UNITY_TO_ROS", ROS2.Transformations.Unity2RosMatrix4x4());
+
             if (publishPCL24 && rglSubgraphPcl24 == null)
             {
                 rglSubgraphPcl24 = new RGLNodeSequence()
                     .AddNodePointsFormat("PCL24_FORMAT", FormatPCL24.GetRGLFields())
-                    .AddNodePointsRos2Publish("PCL24_PUB", pcl24Topic, frameID, reliabilityPolicy, durabilityPolicy, historyPolicy, historyDepth);
+                    .AddNodePointsRos2Publish("PCL24_PUB", pcl24Topic, frameID, reliabilityPolicy, durabilityPolicy,
+                        historyPolicy, historyDepth);
                 RGLNodeSequence.Connect(rglSubgraphUnity2Ros, rglSubgraphPcl24);
             }
 
@@ -67,7 +75,8 @@ namespace AWSIM
             {
                 rglSubgraphPcl48 = new RGLNodeSequence()
                     .AddNodePointsFormat("PCL48_FORMAT", FormatPCL48.GetRGLFields())
-                    .AddNodePointsRos2Publish("PCL48_PUB", pcl48Topic, frameID, reliabilityPolicy, durabilityPolicy, historyPolicy, historyDepth);
+                    .AddNodePointsRos2Publish("PCL48_PUB", pcl48Topic, frameID, reliabilityPolicy, durabilityPolicy,
+                        historyPolicy, historyDepth);
                 RGLNodeSequence.Connect(rglSubgraphUnity2Ros, rglSubgraphPcl48);
             }
 
@@ -75,7 +84,8 @@ namespace AWSIM
             {
                 rglSubgraphInstanceId = new RGLNodeSequence()
                     .AddNodePointsFormat("ML_FORMAT", FormatMLInstanceSegmentation.GetRGLFields())
-                    .AddNodePointsRos2Publish("ML_PUB", instanceIdTopic, frameID, reliabilityPolicy, durabilityPolicy, historyPolicy, historyDepth);
+                    .AddNodePointsRos2Publish("ML_PUB", instanceIdTopic, frameID, reliabilityPolicy, durabilityPolicy,
+                        historyPolicy, historyDepth);
                 RGLNodeSequence.Connect(rglSubgraphUnity2Ros, rglSubgraphInstanceId);
             }
 
@@ -83,12 +93,13 @@ namespace AWSIM
             {
                 rglSubgraphRadar = new RGLNodeSequence()
                     .AddNodePointsFormat("RADAR_FORMAT", FormatRadarSmartMicro.GetRGLFields())
-                    .AddNodePointsRos2Publish("RADAR_PUB", radarTopic, frameID, reliabilityPolicy, durabilityPolicy, historyPolicy, historyDepth);
+                    .AddNodePointsRos2Publish("RADAR_PUB", radarTopic, frameID, reliabilityPolicy, durabilityPolicy,
+                        historyPolicy, historyDepth);
                 RGLNodeSequence.Connect(rglSubgraphUnity2Ros, rglSubgraphRadar);
             }
         }
 
-        private void Start()
+        private void ConnectSensor()
         {
             if (!publishPCL24 && !publishPCL48 && !publishInstanceId && !publishRadar)
             {
@@ -114,6 +125,7 @@ namespace AWSIM
                     Destroy(this);
                     return;
                 }
+
                 radar.ConnectToRadarFrame(rglSubgraphUnity2Ros);
                 sensor = radar;
             }
@@ -122,10 +134,9 @@ namespace AWSIM
             {
                 Debug.LogError($"Cannot publish point cloud to ROS2 without sensor. Destroying {name}.");
                 Destroy(this);
-                return;
             }
 
-            didStart = true;
+            _didStart = true;
         }
 
         public void OnValidate()
@@ -149,6 +160,12 @@ namespace AWSIM
             ApplySubgraphState(ref rglSubgraphRadar, false);
         }
 
+        public void ReInitializePublisher()
+        {
+            CreatePublisher();
+            ConnectSensor();
+        }
+
         private void OnDestroy()
         {
             rglSubgraphPcl24?.Clear();
@@ -162,10 +179,12 @@ namespace AWSIM
         {
             if (subgraph == null)
             {
-                if (didStart && activateState == true)
+                if (_didStart && activateState)
                 {
-                    Debug.LogWarning("Cannot activate the publisher because it was not created. Please activate it before the simulation starts.");
+                    Debug.LogWarning(
+                        "Cannot activate the publisher because it was not created. Please activate it before the simulation starts.");
                 }
+
                 return;
             }
 

@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using ROS2;
 
@@ -32,21 +30,24 @@ namespace AWSIM
             Depth = 1000,
         };
 
-        IPublisher<sensor_msgs.msg.Imu> imuPublisher;
-        sensor_msgs.msg.Imu imuMsg;
-        ImuSensor imuSensor;
+        private IPublisher<sensor_msgs.msg.Imu> _imuPublisher;
+        private sensor_msgs.msg.Imu _imuMsg;
+        private ImuSensor _imuSensor;
 
-        // Start is called before the first frame update
-        void Start()
+        private void Awake()
         {
-            // Get ImuSensor component.
-            imuSensor = GetComponent<ImuSensor>();
+            CreatePublisher();
+        }
 
-            // Set callback.
-            imuSensor.OnOutputData += Publish;
+        private void Start()
+        {
+            ConnectSensor();
+        }
 
+        private void CreatePublisher()
+        {
             // create Imu ros msg.
-            imuMsg = new sensor_msgs.msg.Imu()
+            _imuMsg = new sensor_msgs.msg.Imu()
             {
                 Linear_acceleration = new geometry_msgs.msg.Vector3(),
                 Angular_velocity = new geometry_msgs.msg.Vector3(),
@@ -64,43 +65,61 @@ namespace AWSIM
             };
 
             // Set covariances to 0.
-            for (int i = 0; i < imuMsg.Angular_velocity_covariance.Length; i++)
-                imuMsg.Angular_velocity_covariance[i] = 0;
-            for (int i = 0; i < imuMsg.Linear_acceleration_covariance.Length; i++)
-                imuMsg.Linear_acceleration_covariance[i] = 0;
-            for (int i = 0; i < imuMsg.Orientation_covariance.Length; i++)
-                imuMsg.Orientation_covariance[i] = 0;
+            for (int i = 0; i < _imuMsg.Angular_velocity_covariance.Length; i++)
+                _imuMsg.Angular_velocity_covariance[i] = 0;
+            for (int i = 0; i < _imuMsg.Linear_acceleration_covariance.Length; i++)
+                _imuMsg.Linear_acceleration_covariance[i] = 0;
+            for (int i = 0; i < _imuMsg.Orientation_covariance.Length; i++)
+                _imuMsg.Orientation_covariance[i] = 0;
 
             // Create publisher.
             var qos = qosSettings.GetQoSProfile();
-            imuPublisher = SimulatorROS2Node.CreatePublisher<sensor_msgs.msg.Imu>(topic, qos);
+            _imuPublisher = SimulatorROS2Node.CreatePublisher<sensor_msgs.msg.Imu>(topic, qos);
         }
 
-        void Publish(ImuSensor.OutputData outputData)
+        private void ConnectSensor()
+        {
+            // Get ImuSensor component.
+            _imuSensor = GetComponent<ImuSensor>();
+
+            // Set callback.
+            _imuSensor.OnOutputData += Publish;
+        }
+
+        private void Publish(ImuSensor.OutputData outputData)
         {
             // Convert from Unity to ROS coordinate system and set the value to msg.
             var rosLinearAcceleration = ROS2Utility.UnityToRosPosition(outputData.LinearAcceleration);
             var rosAngularVelocity = ROS2Utility.UnityToRosAngularVelocity(outputData.AngularVelocity);
 
             // Update msg.
-            imuMsg.Linear_acceleration.X = rosLinearAcceleration.x;
-            imuMsg.Linear_acceleration.Y = rosLinearAcceleration.y;
-            imuMsg.Linear_acceleration.Z = rosLinearAcceleration.z;
-            imuMsg.Angular_velocity.X = rosAngularVelocity.x;
-            imuMsg.Angular_velocity.Y = rosAngularVelocity.y;
-            imuMsg.Angular_velocity.Z = rosAngularVelocity.z;
+            _imuMsg.Linear_acceleration.X = rosLinearAcceleration.x;
+            _imuMsg.Linear_acceleration.Y = rosLinearAcceleration.y;
+            _imuMsg.Linear_acceleration.Z = rosLinearAcceleration.z;
+            _imuMsg.Angular_velocity.X = rosAngularVelocity.x;
+            _imuMsg.Angular_velocity.Y = rosAngularVelocity.y;
+            _imuMsg.Angular_velocity.Z = rosAngularVelocity.z;
 
             // Update msg header.
-            var header = imuMsg as MessageWithHeader;
+            var header = _imuMsg as MessageWithHeader;
             SimulatorROS2Node.UpdateROSTimestamp(ref header);
 
             // Publish to ROS2.
-            imuPublisher.Publish(imuMsg);
+            _imuPublisher.Publish(_imuMsg);
         }
 
-        void OnDestroy()
+        public void ReInitializePublisher()
         {
-            SimulatorROS2Node.RemovePublisher<sensor_msgs.msg.Imu>(imuPublisher);
+            CreatePublisher();
+            ConnectSensor();
+        }
+
+        // Note: It takes some time for topic to be removed from Ros2Topic list.
+        // Sometimes it doesn't remove the topic.
+        private void OnDestroy()
+        {
+            _imuSensor.OnOutputData -= Publish;
+            SimulatorROS2Node.RemovePublisher<sensor_msgs.msg.Imu>(_imuPublisher);
         }
     }
 }
