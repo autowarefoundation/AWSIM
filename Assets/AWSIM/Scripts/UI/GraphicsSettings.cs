@@ -8,15 +8,15 @@ namespace AWSIM.Scripts.UI
 {
     public class GraphicsSettings : MonoBehaviour
     {
-        private Dropdown _dropdown;
-        private Light _sunSource;
+        [SerializeField] private Dropdown _graphicsDropdown;
         private List<GameObject> _cameraObjectsList;
+        private Light _sunSource;
 
         private int _gpuMemorySize;
-        private bool _isInitialised;
         private int _initialQualityLevel;
-
-        private readonly List<string> _dropdownOptions = new List<string>
+        private bool _isInitialised;
+        
+        private readonly List<string> _dropdownOptions = new()
         {
             "Low",
             "Medium",
@@ -29,7 +29,6 @@ namespace AWSIM.Scripts.UI
 
         private void Awake()
         {
-            // Get the size of the device's graphics memory
             _gpuMemorySize = SystemInfo.graphicsMemorySize;
         }
 
@@ -41,22 +40,25 @@ namespace AWSIM.Scripts.UI
                 Camera.main?.gameObject,
                 GameObject.FindGameObjectWithTag("BEVCamera")
             };
-
             _sunSource = GameObject.FindGameObjectWithTag("Sun").GetComponent<Light>();
 
             // Set initial quality level
             InitialQualityLevel();
 
-            // Populate dropdown with quality settings
-            _dropdown = GetComponentInChildren<Dropdown>();
-            _dropdown.options.Clear();
+            // Populate dropdowns with quality settings
+            SetupGraphicsDropdown(_graphicsDropdown);
+        }
+        
+        private void SetupGraphicsDropdown(Dropdown dropdown)
+        {
+            dropdown.options.Clear();
             foreach (var option in _dropdownOptions)
             {
-                _dropdown.options.Add(new Dropdown.OptionData(option));
+                dropdown.options.Add(new Dropdown.OptionData(option));
             }
 
-            _dropdown.value = _initialQualityLevel;
-            _dropdown.RefreshShownValue();
+            dropdown.value = _initialQualityLevel;
+            dropdown.RefreshShownValue();
         }
 
         private void InitialQualityLevel()
@@ -248,9 +250,7 @@ namespace AWSIM.Scripts.UI
             _sunSource.shadows = LightShadows.Soft;
         }
 
-        // TODO: update settings based on user input
-        private void CustomAssetProperties()
-        {
-        }
+        // TODO: custom user settings (mozzz)
+        // private void CustomAssetProperties(){}
     }
 }

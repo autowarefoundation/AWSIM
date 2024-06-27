@@ -4,7 +4,7 @@
 QualitySettings:
   m_ObjectHideFlags: 0
   serializedVersion: 5
-  m_CurrentQuality: 3
+  m_CurrentQuality: 1
   m_QualitySettings:
   - serializedVersion: 3
     name: Low
@@ -19,7 +19,7 @@ QualitySettings:
     shadowCascade4Split: {x: 0.06666667, y: 0.2, z: 0.46666667}
     shadowmaskMode: 1
     skinWeights: 4
-    globalTextureMipmapLimit: 2
+    globalTextureMipmapLimit: 3
     textureMipmapLimitSettings: []
     anisotropicTextures: 0
     antiAliasing: 0
@@ -33,12 +33,12 @@ QualitySettings:
     lodBias: 1
     maximumLODLevel: 0
     enableLODCrossFade: 1
-    streamingMipmapsActive: 0
+    streamingMipmapsActive: 1
     streamingMipmapsAddAllCameras: 1
-    streamingMipmapsMemoryBudget: 512
-    streamingMipmapsRenderersPerFrame: 512
-    streamingMipmapsMaxLevelReduction: 2
-    streamingMipmapsMaxFileIORequests: 1024
+    streamingMipmapsMemoryBudget: 256
+    streamingMipmapsRenderersPerFrame: 128
+    streamingMipmapsMaxLevelReduction: 1
+    streamingMipmapsMaxFileIORequests: 256
     particleRaycastBudget: 1024
     asyncUploadTimeSlice: 2
     asyncUploadBufferSize: 16
@@ -68,9 +68,9 @@ QualitySettings:
     shadowCascade4Split: {x: 0.06666667, y: 0.2, z: 0.46666667}
     shadowmaskMode: 1
     skinWeights: 4
-    globalTextureMipmapLimit: 1
+    globalTextureMipmapLimit: 2
     textureMipmapLimitSettings: []
-    anisotropicTextures: 1
+    anisotropicTextures: 0
     antiAliasing: 2
     softParticles: 1
     softVegetation: 1
@@ -82,12 +82,12 @@ QualitySettings:
     lodBias: 1
     maximumLODLevel: 0
     enableLODCrossFade: 1
-    streamingMipmapsActive: 0
+    streamingMipmapsActive: 1
     streamingMipmapsAddAllCameras: 1
     streamingMipmapsMemoryBudget: 512
-    streamingMipmapsRenderersPerFrame: 512
+    streamingMipmapsRenderersPerFrame: 256
     streamingMipmapsMaxLevelReduction: 2
-    streamingMipmapsMaxFileIORequests: 1024
+    streamingMipmapsMaxFileIORequests: 512
     particleRaycastBudget: 2048
     asyncUploadTimeSlice: 2
     asyncUploadBufferSize: 16
@@ -117,7 +117,7 @@ QualitySettings:
     shadowCascade4Split: {x: 0.06666667, y: 0.2, z: 0.46666667}
     shadowmaskMode: 1
     skinWeights: 4
-    globalTextureMipmapLimit: 0
+    globalTextureMipmapLimit: 1
     textureMipmapLimitSettings: []
     anisotropicTextures: 1
     antiAliasing: 4
@@ -131,12 +131,12 @@ QualitySettings:
     lodBias: 1
     maximumLODLevel: 0
     enableLODCrossFade: 1
-    streamingMipmapsActive: 0
+    streamingMipmapsActive: 1
     streamingMipmapsAddAllCameras: 1
-    streamingMipmapsMemoryBudget: 512
+    streamingMipmapsMemoryBudget: 768
     streamingMipmapsRenderersPerFrame: 512
-    streamingMipmapsMaxLevelReduction: 2
-    streamingMipmapsMaxFileIORequests: 1024
+    streamingMipmapsMaxLevelReduction: 3
+    streamingMipmapsMaxFileIORequests: 512
     particleRaycastBudget: 4096
     asyncUploadTimeSlice: 2
     asyncUploadBufferSize: 16
@@ -168,7 +168,7 @@ QualitySettings:
     skinWeights: 4
     globalTextureMipmapLimit: 0
     textureMipmapLimitSettings: []
-    anisotropicTextures: 2
+    anisotropicTextures: 1
     antiAliasing: 8
     softParticles: 1
     softVegetation: 1
@@ -180,11 +180,11 @@ QualitySettings:
     lodBias: 1
     maximumLODLevel: 0
     enableLODCrossFade: 1
-    streamingMipmapsActive: 0
+    streamingMipmapsActive: 1
     streamingMipmapsAddAllCameras: 1
-    streamingMipmapsMemoryBudget: 512
+    streamingMipmapsMemoryBudget: 1024
     streamingMipmapsRenderersPerFrame: 512
-    streamingMipmapsMaxLevelReduction: 2
+    streamingMipmapsMaxLevelReduction: 4
     streamingMipmapsMaxFileIORequests: 1024
     particleRaycastBudget: 4096
     asyncUploadTimeSlice: 2

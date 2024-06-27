@@ -1250,6 +1250,18 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: 2122627086, guid: 164645b2d105b6b4ab4e3d2e7c65dab2, type: 3}
+      propertyPath: m_HDR
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2122627086, guid: 164645b2d105b6b4ab4e3d2e7c65dab2, type: 3}
+      propertyPath: m_AllowMSAA
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2122627086, guid: 164645b2d105b6b4ab4e3d2e7c65dab2, type: 3}
+      propertyPath: m_TargetTexture
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 2108079387665500469, guid: 164645b2d105b6b4ab4e3d2e7c65dab2, type: 3}
       propertyPath: pointSize
       value: 0.03
@@ -1325,14 +1337,6 @@ PrefabInstance:
     - target: {fileID: 5709321372887088733, guid: 164645b2d105b6b4ab4e3d2e7c65dab2, type: 3}
       propertyPath: m_RenderPostProcessing
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5709321372887088733, guid: 164645b2d105b6b4ab4e3d2e7c65dab2, type: 3}
-      propertyPath: m_RequiresDepthTextureOption
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5709321372887088733, guid: 164645b2d105b6b4ab4e3d2e7c65dab2, type: 3}
-      propertyPath: m_RequiresOpaqueTextureOption
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8996813226046187441, guid: 164645b2d105b6b4ab4e3d2e7c65dab2, type: 3}
       propertyPath: height
@@ -2848,8 +2852,8 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 808390806}
   - {fileID: 1545838771}
+  - {fileID: 808390806}
   m_Father: {fileID: 1908005082}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
@@ -7133,6 +7137,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d9fc6663dcc36640b6c24a78eb3e1d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _graphicsDropdown: {fileID: 808390807}
 --- !u!1 &1911152048
 GameObject:
   m_ObjectHideFlags: 0
