@@ -37,7 +37,7 @@ QualitySettings:
     streamingMipmapsAddAllCameras: 1
     streamingMipmapsMemoryBudget: 256
     streamingMipmapsRenderersPerFrame: 128
-    streamingMipmapsMaxLevelReduction: 7
+    streamingMipmapsMaxLevelReduction: 1
     streamingMipmapsMaxFileIORequests: 256
     particleRaycastBudget: 1024
     asyncUploadTimeSlice: 2
@@ -86,7 +86,7 @@ QualitySettings:
     streamingMipmapsAddAllCameras: 1
     streamingMipmapsMemoryBudget: 512
     streamingMipmapsRenderersPerFrame: 256
-    streamingMipmapsMaxLevelReduction: 7
+    streamingMipmapsMaxLevelReduction: 2
     streamingMipmapsMaxFileIORequests: 512
     particleRaycastBudget: 2048
     asyncUploadTimeSlice: 2
@@ -133,9 +133,9 @@ QualitySettings:
     enableLODCrossFade: 1
     streamingMipmapsActive: 1
     streamingMipmapsAddAllCameras: 1
-    streamingMipmapsMemoryBudget: 1024
+    streamingMipmapsMemoryBudget: 768
     streamingMipmapsRenderersPerFrame: 512
-    streamingMipmapsMaxLevelReduction: 5
+    streamingMipmapsMaxLevelReduction: 3
     streamingMipmapsMaxFileIORequests: 512
     particleRaycastBudget: 4096
     asyncUploadTimeSlice: 2
@@ -182,9 +182,9 @@ QualitySettings:
     enableLODCrossFade: 1
     streamingMipmapsActive: 1
     streamingMipmapsAddAllCameras: 1
-    streamingMipmapsMemoryBudget: 2048
-    streamingMipmapsRenderersPerFrame: 1024
-    streamingMipmapsMaxLevelReduction: 3
+    streamingMipmapsMemoryBudget: 1024
+    streamingMipmapsRenderersPerFrame: 512
+    streamingMipmapsMaxLevelReduction: 4
     streamingMipmapsMaxFileIORequests: 1024
     particleRaycastBudget: 4096
     asyncUploadTimeSlice: 2
