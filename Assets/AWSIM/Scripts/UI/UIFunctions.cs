@@ -9,6 +9,21 @@ namespace AWSIM.Scripts.UI
     // Functions used by the UI elements
     public static class UIFunctions
     {
+        // Lerp simple values
+        public static IEnumerator LerpImageColor(Image image, Color targetColor, float lerpValue)
+        {
+            var elapsedTime = 0f;
+            var currentColor = image.color;
+            while (elapsedTime < 1f)
+            {
+                elapsedTime += Time.deltaTime * lerpValue;
+                image.color = Color.Lerp(currentColor, targetColor, elapsedTime);
+                yield return null;
+            }
+
+            image.color = targetColor;
+        }
+
         // Lerp UI objects position
         public static IEnumerator LerpUIRectPosition(RectTransform uiRect, Vector2 targetPosition, float lerpValue,
             bool willDisableAtEnd)
