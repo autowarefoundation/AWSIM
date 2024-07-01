@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -5,47 +6,45 @@ namespace AWSIM.Scripts.UI
 {
     public class UISideBarHandler : MonoBehaviour
     {
-        [SerializeField] public float uiAnimationLerpValue;
+        [SerializeField] public float UIAnimationLerpValue;
+        [SerializeField] private GameObject _sideBar;
+        [SerializeField] private Image _staticBg;
+        private Vector2 _sideBarPositionActive;
+        [NonSerialized] public Vector2 SideBarPositionDisabled;
 
-        [SerializeField] private GameObject sideBar;
-        [SerializeField] private Vector2 sideBarPositionActive;
-        [SerializeField] private Vector2 sideBarPositionDisabled;
-
-        [SerializeField] private GameObject sideBarChevronButton;
-        [SerializeField] private Vector2 sideChevronPositionOpen;
-        [SerializeField] private Vector2 sideChevronPositionClosed;
-
-        [SerializeField] public Sprite chevronSpriteRight;
-        [SerializeField] public Sprite chevronSpriteLeft;
+        private RectTransform _sideBarRectTransform;
+        private bool _isSideBarActivePos;
+        private Color _staticBgDefaultColor;
+        [SerializeField] private Color _staticBgActiveColor = new Color(40, 40, 40, 1);
 
         private void Start()
         {
-            // Disable sidebar if enabled by default
-            sideBar.SetActive(true);
+            _sideBarRectTransform = _sideBar.GetComponent<RectTransform>();
+            // Set the active and disabled position of the sidebar
+            _sideBarPositionActive = new Vector2(0, 0);
+            SideBarPositionDisabled = new Vector2(-_sideBarRectTransform.sizeDelta.x, 0);
+            // Move the sidebar to the active position
+            _sideBarRectTransform.anchoredPosition = _sideBarPositionActive;
+            _isSideBarActivePos = true;
+            _staticBgDefaultColor = _staticBg.color;
         }
 
         public void ToggleSideBar()
         {
-            sideBarChevronButton.transform.GetChild(0).GetComponent<Image>().sprite = sideBar.activeSelf
-                ? chevronSpriteLeft
-                : chevronSpriteRight;
-            var sideBarRect = sideBar.GetComponent<RectTransform>();
-            var sideBarChevronRect = sideBarChevronButton.GetComponent<RectTransform>();
-
-            if (!sideBar.activeSelf)
+            // Toggle sidebar position
+            if (!_isSideBarActivePos)
             {
-                sideBar.SetActive(true);
-                StartCoroutine(UIFunctions.LerpUIRectPosition(sideBarRect, sideBarPositionActive,
-                    uiAnimationLerpValue, false));
-                StartCoroutine(UIFunctions.LerpUIRectPosition(sideBarChevronRect, sideChevronPositionOpen,
-                    uiAnimationLerpValue, false));
+                StartCoroutine(UIFunctions.LerpUIRectPosition(_sideBarRectTransform, _sideBarPositionActive,
+                    UIAnimationLerpValue, false));
+                StartCoroutine(UIFunctions.LerpImageColor(_staticBg, _staticBgActiveColor, UIAnimationLerpValue));
+                _isSideBarActivePos = true;
             }
             else
             {
-                StartCoroutine(UIFunctions.LerpUIRectPosition(sideBarRect, sideBarPositionDisabled,
-                    uiAnimationLerpValue, true));
-                StartCoroutine(UIFunctions.LerpUIRectPosition(sideBarChevronRect, sideChevronPositionClosed,
-                    uiAnimationLerpValue, false));
+                StartCoroutine(UIFunctions.LerpUIRectPosition(_sideBarRectTransform, SideBarPositionDisabled,
+                    UIAnimationLerpValue, false));
+                _isSideBarActivePos = false;
+                StartCoroutine(UIFunctions.LerpImageColor(_staticBg, _staticBgDefaultColor, UIAnimationLerpValue));
             }
         }
     }

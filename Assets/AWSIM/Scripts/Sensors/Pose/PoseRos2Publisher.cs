@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 using ROS2;
 
@@ -8,7 +7,7 @@ namespace AWSIM
     /// <summary>
     /// Convert the data output from PoseSensor to ROS2 msg and Publish.
     /// </summary>
-    [RequireComponent(typeof(PoseRos2Publisher))]
+    [RequireComponent(typeof(PoseSensor))]
     public class PoseRos2Publisher : MonoBehaviour
     {
         /// <summary>
@@ -32,21 +31,24 @@ namespace AWSIM
             Depth = 1,
         };
 
-        IPublisher<geometry_msgs.msg.PoseStamped> poseStampedPublisher;
-        geometry_msgs.msg.PoseStamped msg;
-        PoseSensor sensor;
+        private IPublisher<geometry_msgs.msg.PoseStamped> _poseStampedPublisher;
+        private geometry_msgs.msg.PoseStamped _msg;
+        private PoseSensor _poseSensor;
 
-        // Start is called before the first frame update
-        void Start()
+        private void Awake()
         {
-            // Get GnssSensor component.
-            sensor = GetComponent<PoseSensor>();
+            CreatePublisher();
+        }
 
-            // Set callback.
-            sensor.OnOutputData += Publish;
+        private void Start()
+        {
+            ConnectSensor();
+        }
 
+        private void CreatePublisher()
+        {
             // Create msg.
-            msg = new geometry_msgs.msg.PoseStamped()
+            _msg = new geometry_msgs.msg.PoseStamped()
             {
                 Header = new std_msgs.msg.Header()
                 {
@@ -57,35 +59,53 @@ namespace AWSIM
 
             // Create publisher.
             var qos = QosSettings.GetQoSProfile();
-            poseStampedPublisher = SimulatorROS2Node.CreatePublisher<geometry_msgs.msg.PoseStamped>(Topic, qos);
+            _poseStampedPublisher = SimulatorROS2Node.CreatePublisher<geometry_msgs.msg.PoseStamped>(Topic, qos);
         }
 
-        void Publish(PoseSensor.OutputData outputData)
+        private void ConnectSensor()
+        {
+            // Get PoseSensor component.
+            _poseSensor = GetComponent<PoseSensor>();
+
+            // Set callback.
+            _poseSensor.OnOutputData += Publish;
+        }
+
+        private void Publish(PoseSensor.OutputData outputData)
         {
             // Converts data output from GnssSensor to ROS2 msg
             var rosPosition = outputData.Position;
             var rosRotation = outputData.Rotation;
 
-            msg.Pose.Position.X = rosPosition.x;
-            msg.Pose.Position.Y = rosPosition.y;
-            msg.Pose.Position.Z = rosPosition.z;
+            _msg.Pose.Position.X = rosPosition.x;
+            _msg.Pose.Position.Y = rosPosition.y;
+            _msg.Pose.Position.Z = rosPosition.z;
 
-            msg.Pose.Orientation.X = rosRotation.x;
-            msg.Pose.Orientation.Y = rosRotation.y;
-            msg.Pose.Orientation.Z = rosRotation.z;
-            msg.Pose.Orientation.W = rosRotation.w;
+            _msg.Pose.Orientation.X = rosRotation.x;
+            _msg.Pose.Orientation.Y = rosRotation.y;
+            _msg.Pose.Orientation.Z = rosRotation.z;
+            _msg.Pose.Orientation.W = rosRotation.w;
 
             // Update msg header.
-            var header = msg as MessageWithHeader;
+            var header = _msg as MessageWithHeader;
             SimulatorROS2Node.UpdateROSTimestamp(ref header);
 
             // Publish to ROS2.
-            poseStampedPublisher.Publish(msg);
+            _poseStampedPublisher.Publish(_msg);
         }
 
-        void OnDestroy()
+        public void ReInitializePublisher()
         {
-            SimulatorROS2Node.RemovePublisher<geometry_msgs.msg.PoseStamped>(poseStampedPublisher);
+            CreatePublisher();
+            ConnectSensor();
+        }
+
+        // Note: It takes some time for topic to be removed from Ros2Topic list.
+        // Sometimes it doesn't remove the topic.
+        private void OnDestroy()
+        {
+            _poseSensor.OnOutputData -= Publish;
+            SimulatorROS2Node.RemovePublisher<geometry_msgs.msg.PoseStamped>(_poseStampedPublisher);
         }
     }
 }

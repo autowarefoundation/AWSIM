@@ -90,7 +90,7 @@ namespace AWSIM
         /// Update header timestamp
         /// </summary>
         /// <param name="message">Message with header to be updated</param>
-        static public void UpdateROSTimestamp(ref MessageWithHeader message)
+        public static void UpdateROSTimestamp(ref MessageWithHeader message)
         {
             ros2Clock.UpdateROSTimestamp(ref message);
         }
