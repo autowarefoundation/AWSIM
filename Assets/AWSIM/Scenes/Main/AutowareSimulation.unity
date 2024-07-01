@@ -2338,7 +2338,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b27f0a44873d53b892957acddd1fbbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  UIAnimationLerpValue: 3
+  UIAnimationLerpValue: 6
   _sideBar: {fileID: 1194022954}
   _staticBg: {fileID: 1131175672}
   _staticBgActiveColor: {r: 0.15686275, g: 0.15686275, b: 0.15686275, a: 1}
@@ -3715,7 +3715,7 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 808390810}
         m_TargetAssemblyTypeName: AWSIM.Scripts.UI.GraphicsSettings, Assembly-CSharp
         m_MethodName: UISetQuality
         m_Mode: 0
@@ -11234,6 +11234,6 @@ SceneRoots:
   m_Roots:
   - {fileID: 543989980}
   - {fileID: 203643521}
+  - {fileID: 412951386}
   - {fileID: 939690764}
   - {fileID: 1153077012}
-  - {fileID: 412951386}
