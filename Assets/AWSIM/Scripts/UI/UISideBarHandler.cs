@@ -7,10 +7,7 @@ namespace AWSIM.Scripts.UI
     public class UISideBarHandler : MonoBehaviour
     {
         [SerializeField] public float UIAnimationLerpValue;
-
         [SerializeField] private GameObject _sideBar;
-        [SerializeField] private Transform _sideBarChevron;
-        [SerializeField] private Sprite _chevronSpriteLeft, _chevronSpriteRight;
 
         private Vector2 _sideBarPositionActive;
         [NonSerialized] public Vector2 SideBarPositionDisabled;
@@ -31,9 +28,6 @@ namespace AWSIM.Scripts.UI
 
         public void ToggleSideBar()
         {
-            // Toggle chevron sprite
-            _sideBarChevron.GetChild(0).GetComponent<Image>().sprite =
-                _isSideBarActivePos ? _chevronSpriteLeft : _chevronSpriteRight;
             // Toggle sidebar position
             if (!_isSideBarActivePos)
             {
