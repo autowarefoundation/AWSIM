@@ -10,8 +10,10 @@ namespace AWSIM.Scripts.UI
 {
     public class UISensorInteractionPanel : MonoBehaviour
     {
-        [SerializeField] private Transform _uiCard;
+        [SerializeField] private UICard _uiCard;
         [SerializeField] private GameObject _horizontalCardGroupPrefab;
+        [SerializeField] private float _horizontalCardGroupHeight = 15f;
+        [SerializeField] private float _horizontalCardGroupSpacing = 2.5f;
         [SerializeField] private GameObject _verticalCardGroupPrefab;
         [SerializeField] private GameObject _togglePrefab;
         [SerializeField] private GameObject _toggleVisualizationPrefab;
@@ -57,7 +59,7 @@ namespace AWSIM.Scripts.UI
         {
             if (!_uiTabReady)
             {
-                SetupUICard(_uiCard.GetComponent<UICard>());
+                SetupUICard(_uiCard);
                 _uiTabReady = true;
             }
         }
@@ -65,21 +67,25 @@ namespace AWSIM.Scripts.UI
         private void SetupUICard(UICard card)
         {
             _togglesPanel = Instantiate(_verticalCardGroupPrefab, card.transform);
-            // Set the toggles panel to the top of the hierarchy
-            _togglesPanel.transform.SetSiblingIndex(0);
-            float togglePanelPreferredHeight = 10;
+            // Insert panel to the hierarchy
+            _togglesPanel.transform.SetSiblingIndex(1);
+            var togglePanelLayoutGroup = _togglesPanel.GetComponent<LayoutGroup>();
+            _togglesPanel.name = "Sensor Toggles";
 
             // Build tab elements
             foreach (var sensorList in _listOfSensorLists.Where(sensorList => sensorList != null))
             {
                 CreateSensorGroups(sensorList);
-                togglePanelPreferredHeight =
-                    sensorList.Aggregate(togglePanelPreferredHeight, (current, _) => current + 15);
             }
 
-            _togglesPanel.GetComponent<RectTransform>()
-                .SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, togglePanelPreferredHeight);
+            // Calculate the preferred height of the panel
+            var panelVerticalOffsets = togglePanelLayoutGroup.padding.top + togglePanelLayoutGroup.padding.bottom;
+            var togglePanelPreferredHeight = (_lidarSensors.Count + _cameraSensors.Count + _gnssSensors.Count +
+                                              _imuSensors.Count + _odometrySensors.Count + _poseSensors.Count) *
+                _horizontalCardGroupHeight + panelVerticalOffsets;
+            _togglesPanel.GetComponent<RectTransform>().sizeDelta = new Vector2(0, togglePanelPreferredHeight);
 
+            // Recalculate the card height
             card.RecalculateTabBackgroundHeight();
         }
 
@@ -90,9 +96,10 @@ namespace AWSIM.Scripts.UI
             {
                 //create group
                 var cardGroup = Instantiate(_horizontalCardGroupPrefab, _togglesPanel.transform);
-                cardGroup.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, 15);
+                cardGroup.GetComponent<RectTransform>()
+                    .SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, _horizontalCardGroupHeight);
                 cardGroup.GetComponent<LayoutGroup>().childAlignment = TextAnchor.MiddleLeft;
-                cardGroup.GetComponent<HorizontalLayoutGroup>().spacing = 2.5f;
+                cardGroup.GetComponent<HorizontalLayoutGroup>().spacing = _horizontalCardGroupSpacing;
 
                 //create toggle
                 switch (sensorTf.tag)

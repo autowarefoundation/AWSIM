@@ -1673,7 +1673,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1743169424}
   m_HandleRect: {fileID: 1743169422}
   m_Direction: 2
-  m_Value: 0
+  m_Value: 1
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -6304,6 +6304,7 @@ GameObject:
   - component: {fileID: 1427845715}
   - component: {fileID: 1427845714}
   - component: {fileID: 1427845720}
+  - component: {fileID: 1427845721}
   m_Layer: 5
   m_Name: Hotkeys
   m_TagString: Untagged
@@ -6461,6 +6462,22 @@ MonoBehaviour:
   _isCardOpen: 1
   ElementHeight: 30
   ElementSpacing: 5
+--- !u!114 &1427845721
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1427845712}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e587e4f7a260ffaed8a2794da8eef21d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _uiCard: {fileID: 1427845720}
+  _hotkeyGroupPrefab: {fileID: 9074891155659949212, guid: d4d39e276aff2f58ca22ab6543f81756, type: 3}
+  _hotkeyLinePrefab: {fileID: 4717730163523370040, guid: 369e8d16c133a12fea0fd85a3d3134b1, type: 3}
+  _hotkeyTextPrefab: {fileID: 964174475210891725, guid: e16059b95b4b17aefb58461ab2b36d81, type: 3}
 --- !u!1 &1433875015
 GameObject:
   m_ObjectHideFlags: 0
@@ -7579,8 +7596,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f58ccedca89321e14876c4856b2c93e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _uiCard: {fileID: 1811701807}
+  _uiCard: {fileID: 1811701815}
   _horizontalCardGroupPrefab: {fileID: 5803583924779310010, guid: 353d2bc49eef2f4b985bd7102d608a13, type: 3}
+  _horizontalCardGroupHeight: 15
+  _horizontalCardGroupSpacing: 2.5
   _verticalCardGroupPrefab: {fileID: 5803583924779310010, guid: 5db1d1786cf1dd93b9cc8be7ac4792f6, type: 3}
   _togglePrefab: {fileID: 1560411921762773883, guid: 95453cb8cf1505741bdc347a40ef4156, type: 3}
   _toggleVisualizationPrefab: {fileID: 1560411921762773883, guid: 2faa887a724b0e55ca6362c0ae5c80c6, type: 3}
@@ -10140,7 +10159,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -3.7499995, y: 0}
+  m_AnchoredPosition: {x: -3.7499995, y: -0.000061035156}
   m_SizeDelta: {x: -27.5, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &2100303027

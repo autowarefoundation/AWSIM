@@ -1,0 +1,129 @@
+{
+  "keyBinds": [
+    {
+      "name": "VehicleKeyboardInput.cs",
+      "hotkeys": [
+        {
+          "key": "Up Arrow",
+          "description": "Accelerate"
+        },
+        {
+          "key": "Left Arrow",
+          "description": "Steer Left"
+        },
+        {
+          "key": "Right Arrow",
+          "description": "Steer Right"
+        },
+        {
+          "key": "Down Arrow",
+          "description": "Brake"
+        },
+        {
+          "key": "D",
+          "description": "Gear: Drive"
+        },
+        {
+          "key": "P",
+          "description": "Gear: Parking"
+        },
+        {
+          "key": "R",
+          "description": "Gear: Reverse"
+        },
+        {
+          "key": "N",
+          "description": "Gear: Neutral"
+        },
+        {
+          "key": "1",
+          "description": "Signal: Left"
+        },
+        {
+          "key": "2",
+          "description": "Signal: Right"
+        },
+        {
+          "key": "3",
+          "description": "Signal: Hazard"
+        },
+        {
+          "key": "4",
+          "description": "Signal: Off"
+        }
+      ]
+    },
+    {
+      "name": "FollowCamera.cs",
+      "hotkeys": [
+        {
+          "key": "C",
+          "description": "Camera control toggle"
+        },
+        {
+          "key": "Mouse Drag",
+          "description": "Camera rotation"
+        },
+        {
+          "key": "Mouse Wheel +/-",
+          "description": "Camera zoom"
+        }
+      ]
+    },
+    {
+      "name": "HotkeyHandler.cs",
+      "hotkeys": [
+        {
+          "key": "Esc",
+          "description": "Toggle side bar"
+        },
+        {
+          "key": "LeftCtrl + R",
+          "description": "Reset ego vehicle"
+        },
+        {
+          "key": "LeftCtrl + T",
+          "description": "Toggle traffic visibility"
+        }
+      ]
+    },
+    {
+      "name": "BirdEyeView.cs",
+      "hotkeys": [
+        {
+          "key": "B",
+          "description": "Toggle BEV camera"
+        },
+        {
+          "key": "WASD / Arrow Keys",
+          "description": "Pan"
+        },
+        {
+          "key": "Hold Mouse3 + Drag",
+          "description": "Pan"
+        },
+        {
+          "key": "Mouse Wheel +/-",
+          "description": "Zoom"
+        },
+        {
+          "key": "Space",
+          "description": "Snap to ego vehicle"
+        },
+        {
+          "key": "LeftCtrl + Space",
+          "description": "Follow ego vehicle on/off"
+        }
+      ]
+    },
+    {
+      "name": "Graphy Asset",
+      "hotkeys": [
+        {
+          "key": "F3",
+          "description": "Toggle Graphy visualizer"
+        }
+      ]
+    }
+  ]
+}

@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -13,24 +12,25 @@ namespace AWSIM.Scripts.UI
         [SerializeField] private float _chevronCollapsedDegrees = 0f;
 
         [SerializeField] private bool _isCardOpen;
-        [SerializeField] public float ElementHeight = 25f;
+        [SerializeField] public float ElementHeight = 30f;
         [SerializeField] public float ElementSpacing = 5f;
 
-        [NonSerialized] private List<RectTransform> RectTransformsForHeightCalculation;
+        private List<RectTransform> _rectTransformsForHeightCalculation;
         private float _tabOffBgHeight;
         private float _tabOnBgHeight;
         private float _lerpValue;
 
         private void Awake()
         {
-            RectTransformsForHeightCalculation = BuildChildRectTransformList();
-            _tabOnBgHeight =
-                UIFunctions.CalculateCardTotalHeight(RectTransformsForHeightCalculation, ElementSpacing);
+            // set initial on/off height
+            _rectTransformsForHeightCalculation = BuildChildRectTransformList();
+            _tabOnBgHeight = UIFunctions.CalculateCardTotalHeight(_rectTransformsForHeightCalculation, ElementSpacing);
             _tabOffBgHeight = ElementHeight;
         }
 
         private void Start()
         {
+            // Get lerp value
             _lerpValue = GetComponentInParent<UISideBarHandler>().UIAnimationLerpValue;
         }
 
@@ -56,9 +56,8 @@ namespace AWSIM.Scripts.UI
         // Call this from other scripts to recalculate the tab background height
         public void RecalculateTabBackgroundHeight()
         {
-            RectTransformsForHeightCalculation = BuildChildRectTransformList();
-            _tabOnBgHeight =
-                UIFunctions.CalculateCardTotalHeight(RectTransformsForHeightCalculation, ElementSpacing);
+            _rectTransformsForHeightCalculation = BuildChildRectTransformList();
+            _tabOnBgHeight = UIFunctions.CalculateCardTotalHeight(_rectTransformsForHeightCalculation, ElementSpacing);
             if (_isCardOpen)
             {
                 StartCoroutine(UIFunctions.LerpUICardPreferredHeight(_cardTopBarButton, GetComponent<LayoutElement>(),
