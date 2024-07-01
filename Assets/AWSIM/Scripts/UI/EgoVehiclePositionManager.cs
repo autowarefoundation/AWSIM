@@ -11,7 +11,7 @@ namespace AWSIM.Scripts.UI
 
         private void Start()
         {
-            InitializeEgoTransform(EgoTransform);
+            // InitializeEgoTransform(EgoTransform);
         }
         public void InitializeEgoTransform(Transform egoTransform)
         {
