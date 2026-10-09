@@ -113,7 +113,8 @@ namespace Awsim.Common
         /// <param name="publisher"></param>
         public static void RemovePublisher<T>(IPublisherBase publisher)
         {
-            if (_ros2UnityCore.Ok())
+            // ROS-free scenes can destroy prefab publishers without initializing ROS.
+            if (publisher != null && _ros2UnityCore != null && _ros2Node != null && _ros2UnityCore.Ok())
             {
                 _ros2Node.RemovePublisher<T>(publisher);
             }

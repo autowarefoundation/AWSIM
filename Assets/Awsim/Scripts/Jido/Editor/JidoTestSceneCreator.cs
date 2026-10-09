@@ -28,6 +28,10 @@ namespace Awsim.Jido.Editor
         [MenuItem("JIDO/Create UDP Test Track/HDRP")]
         public static void CreateHdrp() => Create(VehicleHdrp, "JidoUdpTestTrackHDRP");
 
+        public static void CreateShinjukuBase() => Create(VehicleHdrp, "JidoShinjukuHDRP");
+
+        public static void CreateShuttleTrackBase() => Create(VehicleHdrp, "JidoShuttlePhysicsHDRP");
+
         [MenuItem("JIDO/Add VLP16 to Current Test Track/URP")]
         public static void AddLidarUrp() => AddLidar(LidarUrp);
 
@@ -43,8 +47,10 @@ namespace Awsim.Jido.Editor
                 Debug.LogError("Open a JIDO test scene and verify the VLP16 prefab exists.");
                 return;
             }
-            if (Object.FindFirstObjectByType<RGLUnityPlugin.SceneManager>() == null)
-                new GameObject("RGL Scene Manager").AddComponent<RGLUnityPlugin.SceneManager>();
+            var sceneManager = Object.FindFirstObjectByType<RGLUnityPlugin.SceneManager>();
+            if (sceneManager == null)
+                sceneManager = new GameObject("RGL Scene Manager").AddComponent<RGLUnityPlugin.SceneManager>();
+            sceneManager.UseUnitySimulationTime = true;
 
             var vehicle = bridge.GetComponentInChildren<AccelVehicle>(true);
             if (vehicle == null)
@@ -52,6 +58,7 @@ namespace Awsim.Jido.Editor
                 Debug.LogError("JIDO scene has no AccelVehicle.");
                 return;
             }
+            sceneManager.IgnoredHierarchy = bridge.transform;
             var instance = (GameObject)PrefabUtility.InstantiatePrefab(prefab);
             instance.name = "JIDO VLP16";
             instance.transform.SetParent(vehicle.transform, false);
@@ -93,7 +100,9 @@ namespace Awsim.Jido.Editor
 
             var instance = (GameObject)PrefabUtility.InstantiatePrefab(prefab, scene);
             instance.name = "JIDO Ego Vehicle";
-            instance.transform.position = new Vector3(0f, 0.6f, 0f);
+            // Measured settled pivot on this flat track. Starting high lets the
+            // full-brake sleep freeze the suspension extended until first motion.
+            instance.transform.position = new Vector3(0f, -0.43f, 0f);
             instance.transform.rotation = Quaternion.identity;
 
             var vehicle = instance.GetComponentInChildren<AccelVehicle>(true);

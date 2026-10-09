@@ -2,8 +2,10 @@
 // RGL point cloud -> bounded UDP chunks; no ROS 2 publisher.
 
 using System;
+using System.Collections.Concurrent;
 using System.Net;
 using System.Net.Sockets;
+using System.Threading;
 using RGLUnityPlugin;
 using UnityEngine;
 
@@ -26,6 +28,10 @@ namespace Awsim.Jido
         private IPEndPoint destination;
         private Vector3[] points = Array.Empty<Vector3>();
         private uint scanId;
+        private bool reportedEmptyScan;
+        private readonly BlockingCollection<byte[][]> pendingScans = new BlockingCollection<byte[][]>(1);
+        private Thread sendThread;
+        private volatile bool stopping;
 
         private void Awake()
         {
@@ -46,8 +52,11 @@ namespace Awsim.Jido
             }
             destination = new IPEndPoint(address, lidarPort);
             sender = new UdpClient();
+            sendThread = new Thread(SendScans) { IsBackground = true, Name = "JIDO LiDAR UDP" };
+            sendThread.Start();
             lidar.ConnectToLidarFrame(yieldGraph);
             lidar.onNewData += Publish;
+            Debug.Log($"JIDO LiDAR UDP ready at {transform.position}; capture={lidar.AutomaticCaptureHz} Hz.");
         }
 
         private void Publish()
@@ -62,7 +71,14 @@ namespace Awsim.Jido
                 Debug.LogWarning($"JIDO LiDAR read failed: {ex.Message}");
                 return;
             }
-            if (count <= 0) return;
+            if (count <= 0)
+            {
+                if (!reportedEmptyScan)
+                    Debug.LogWarning($"JIDO LiDAR scan has no hits at {transform.position}.");
+                reportedEmptyScan = true;
+                return;
+            }
+            if (scanId == 0) Debug.Log($"JIDO LiDAR first scan: {count} points.");
             int chunks = (count + maxPointsPerChunk - 1) / maxPointsPerChunk;
             if (chunks > ushort.MaxValue)
             {
@@ -70,6 +86,7 @@ namespace Awsim.Jido
                 return;
             }
             scanId++;
+            var packets = new byte[chunks][];
             for (int index = 0; index < chunks; index++)
             {
                 int offset = index * maxPointsPerChunk;
@@ -89,15 +106,36 @@ namespace Awsim.Jido
                     WriteF32Le(packet, at + 4, point.y);
                     WriteF32Le(packet, at + 8, point.z);
                 }
-                try
+                packets[index] = packet;
+            }
+            // Keep only the latest pending scan if the transport falls behind.
+            if (!pendingScans.TryAdd(packets))
+            {
+                pendingScans.TryTake(out _);
+                pendingScans.TryAdd(packets);
+            }
+        }
+
+        private void SendScans()
+        {
+            foreach (var packets in pendingScans.GetConsumingEnumerable())
+            {
+                for (int index = 0; index < packets.Length && !stopping; index++)
                 {
-                    sender.Send(packet, packet.Length, destination);
+                    try
+                    {
+                        sender.Send(packets[index], packets[index].Length, destination);
+                    }
+                    catch (SocketException ex)
+                    {
+                        if (!stopping) Debug.LogWarning($"JIDO LiDAR UDP send failed: {ex.Message}");
+                        break;
+                    }
+                    // Urban scans exceed the Linux default UDP receive queue.
+                    // Spread fragments across receiver polls without blocking physics.
+                    if ((index + 1) % 8 == 0) Thread.Sleep(1);
                 }
-                catch (SocketException ex)
-                {
-                    Debug.LogWarning($"JIDO LiDAR UDP send failed: {ex.Message}");
-                    return;
-                }
+                if (stopping) break;
             }
         }
 
@@ -125,6 +163,9 @@ namespace Awsim.Jido
         private void OnDestroy()
         {
             if (lidar != null) lidar.onNewData -= Publish;
+            stopping = true;
+            pendingScans.CompleteAdding();
+            sendThread?.Join(1000);
             sender?.Close();
             yieldGraph?.Clear();
         }

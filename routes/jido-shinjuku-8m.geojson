@@ -1,0 +1,60 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "JIDO Shinjuku - reta de 8 m",
+        "enu_ref": {
+          "lat": 35.68804844850089,
+          "lon": 139.692093878637,
+          "alt": 42.499881744384766
+        },
+        "purpose": "SIL short route",
+        "frame": "AWSIM simulated ENU",
+        "geographic_accuracy": "UTM grid convergence and scale corrected using local WGS84 tangent plane; simulator route, not a surveyed real-world route."
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            139.68903483104398,
+            35.686019678159354
+          ],
+          [
+            139.68904389309822,
+            35.68602483308495
+          ],
+          [
+            139.6890529548165,
+            35.68602998773479
+          ],
+          [
+            139.68906201653593,
+            35.68603514293405
+          ],
+          [
+            139.68907107825652,
+            35.68604029785757
+          ],
+          [
+            139.68908014065255,
+            35.68604545291796
+          ],
+          [
+            139.68908920203833,
+            35.68605060784009
+          ],
+          [
+            139.6890982644367,
+            35.686055762899095
+          ],
+          [
+            139.68910732616195,
+            35.68606091781987
+          ]
+        ]
+      }
+    }
+  ]
+}

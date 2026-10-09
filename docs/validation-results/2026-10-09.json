@@ -1,0 +1,838 @@
+{
+  "date": "2026-10-09",
+  "scope": "AWSIM apartment-server SIL validation; existing Core binaries, simulator-truth localization, provisional shuttle physics",
+  "reports": {
+    "jido-map-alignment": {
+      "utmZone": 54,
+      "north": true,
+      "utmEasting": 381655.72655,
+      "utmNorthing": 3950137.42965,
+      "lat": 35.68804844850089,
+      "lon": 139.692093878637,
+      "alt": 42.499881744384766,
+      "unityYawDeg": -0.7630841539762511,
+      "horizontalScale": 1.000234140610875,
+      "validationRadiusM": 1000.0,
+      "maximumHorizontalErrorM": 0.002920273762332748
+    },
+    "jido-shuttle-physics-check": {
+      "passed": true,
+      "model": "JIDO SK_Jido_F",
+      "mass_provisional_kg": 1500,
+      "initial_pose": {
+        "position": {
+          "x": 0.0005579878343269229,
+          "y": -0.00017714312707539648,
+          "z": -2.9087066650390625e-05
+        },
+        "velocity": {
+          "vx": 0.0,
+          "vy": 0.0,
+          "vz": 0.0
+        },
+        "orientation": {
+          "roll": 0.0,
+          "pitch": 0.0,
+          "yaw": 6.020368914505525e-07
+        },
+        "uncertainty": {
+          "position": 0.05000000074505806
+        },
+        "enu_ref": {
+          "lat": 0.0,
+          "lon": 0.0,
+          "alt": 0.0
+        },
+        "status": "converged",
+        "sensor": "awsim_truth",
+        "_sim_time": 4.979996471088435
+      },
+      "settled_diagnostics": {
+        "kind": "shuttle_physics",
+        "sim_time": 4.902399759070295,
+        "grounded_wheels": 4,
+        "mass_kg": 1500.0,
+        "position": {
+          "x": 0.00017714311252348125,
+          "y": -2.9087066650390625e-05,
+          "z": 0.0005579878343269229
+        },
+        "rotation_deg": {
+          "x": 359.96240234375,
+          "y": -3.449416544754058e-05,
+          "z": 0.011940672062337399
+        },
+        "wheel_visual_error_m": 1.712013073529306e-07,
+        "barrier_contact": false,
+        "longitudinal_acceleration_mps2": 0.0
+      },
+      "rest_height_drift_m": 0.0,
+      "straight_distance_m": 1.2857492278990337,
+      "straight_speed_mps": 0.8593147397707631,
+      "acceleration_interval_sim_s": 2.999997874149659,
+      "left_yaw_delta_rad": 0.21189541659168754,
+      "timeout_final_speed_mps": 0.0,
+      "reverse_speed_mps": -0.8593115577825916,
+      "reverse_distance_m": 1.2699329002924569,
+      "barrier_contact": true,
+      "barrier_pose": {
+        "x": 17.70635986328125,
+        "y": 4.7135419845581055,
+        "z": -0.00010836124420166016
+      },
+      "barrier_speed_mps": 0.026151277527952835,
+      "minimum_grounded_wheels": 4,
+      "max_wheel_visual_error_m": 2.682209014892578e-07,
+      "max_body_tilt_deg": 1.02803635597229,
+      "maximum_normal_acceleration_mps2": 0.29946061968803406,
+      "final_speed_mps": 0.0,
+      "diagnostic_samples": 391
+    },
+    "jido-shuttle-city-check": {
+      "passed": true,
+      "model": "JIDO SK_Jido_F",
+      "mass_provisional_kg": 1500,
+      "city_scene": true,
+      "initial_pose": {
+        "position": {
+          "x": -278.6337890625,
+          "y": -220.53594970703125,
+          "z": -1.2710928916931152
+        },
+        "velocity": {
+          "vx": 0.0,
+          "vy": 0.0,
+          "vz": 0.0
+        },
+        "orientation": {
+          "roll": 0.0,
+          "pitch": 0.0,
+          "yaw": 0.5955445170402527
+        },
+        "uncertainty": {
+          "position": 0.05000000074505806
+        },
+        "enu_ref": {
+          "lat": 35.68804844850089,
+          "lon": 139.692093878637,
+          "alt": 42.499881744384766
+        },
+        "status": "converged",
+        "sensor": "awsim_truth",
+        "_sim_time": 4.919996513605442
+      },
+      "settled_diagnostics": {
+        "kind": "shuttle_physics",
+        "sim_time": 4.909476920351474,
+        "grounded_wheels": 4,
+        "mass_kg": 1500.0,
+        "position": {
+          "x": 220.53594970703125,
+          "y": -1.2710928916931152,
+          "z": -278.6337890625
+        },
+        "rotation_deg": {
+          "x": 359.31756591796875,
+          "y": 325.8778076171875,
+          "z": 0.44016802310943604
+        },
+        "wheel_visual_error_m": 0.0,
+        "barrier_contact": false,
+        "longitudinal_acceleration_mps2": 0.0
+      },
+      "rest_height_drift_m": 0.0,
+      "straight_distance_m": 0.8730574789619361,
+      "straight_speed_mps": 0.5799761837070209,
+      "acceleration_interval_sim_s": 2.999997874149659,
+      "left_yaw_delta_rad": 0.09298467636108398,
+      "timeout_final_speed_mps": 0.0,
+      "reverse_speed_mps": -1.1699356604078897,
+      "reverse_distance_m": 1.8054942724433851,
+      "barrier_contact": false,
+      "barrier_pose": {
+        "x": -278.512451171875,
+        "y": -220.27508544921875,
+        "z": -1.27189040184021
+      },
+      "barrier_speed_mps": 0.0,
+      "minimum_grounded_wheels": 4,
+      "max_wheel_visual_error_m": 5.960464477539063e-08,
+      "max_body_tilt_deg": 1.643646240234375,
+      "maximum_normal_acceleration_mps2": 0.21510843932628632,
+      "final_speed_mps": 0.0,
+      "diagnostic_samples": 248
+    },
+    "jido-shuttle-sensors-check": {
+      "passed": true,
+      "city": false,
+      "geometry": {
+        "pose_frame": "rear_axle_ground",
+        "rear_axle_offset_m": 1.4236033,
+        "lidar_mount_height_m": 2.3,
+        "lidar_optical_height_m": 2.3377,
+        "imu_height_m": 1,
+        "imu_forward_of_rear_axle_m": 1.4236033,
+        "lidar_forward_of_rear_axle_m": 1.4236033,
+        "imu_axes": "x_forward_y_left_z_up_specific_force",
+        "lidar_axes": "x_forward_y_left_z_up_sensor_origin"
+      },
+      "counts": {
+        "imu": 536,
+        "pose": 297,
+        "cloud": 178,
+        "obstacles": 180
+      },
+      "rear_reference_error_m": 5.429794483584227e-08,
+      "rear_contact_error_m": 0.0009639918675418204,
+      "imu_rest_mean": {
+        "ax": 0.006439834833145142,
+        "ay": -0.002044443506747484,
+        "az": 9.809998512268066,
+        "wx": 0.0,
+        "wy": 0.0,
+        "wz": 0.0
+      },
+      "imu_gravity_error_mps2": 8.390378935656567e-07,
+      "measured_lidar_world_height_m": 2.3376994132995605,
+      "floor_points": 809,
+      "measured_target_errors_m": [
+        0.6010977090596271,
+        0.45963217083647084,
+        0.3749431909149604
+      ],
+      "static_obstacles": {
+        "fwd_cru_m": 11.362317085266113,
+        "fwd_cru_pts": 121,
+        "fwd_cru_volta_anterior": false,
+        "num_obstacles": 3,
+        "obstacles": [
+          {
+            "depth": 1.1849112510681152,
+            "distance": 11.398916244506836,
+            "height": 1.223219633102417,
+            "num_points": 121,
+            "width": 0.08891010284423828,
+            "x": 11.39891529083252,
+            "x_max": 11.449187278747559,
+            "x_min": 11.36027717590332,
+            "y": -0.003953257109969854,
+            "y_max": 0.5963694453239441,
+            "y_min": -0.5885417461395264,
+            "z": -1.5975797176361084
+          },
+          {
+            "depth": 1.2107105255126953,
+            "distance": 9.54063606262207,
+            "height": 1.0997189283370972,
+            "num_points": 179,
+            "width": 1.2426328659057617,
+            "x": 7.623297214508057,
+            "x_max": 8.607701301574707,
+            "x_min": 7.365068435668945,
+            "y": 5.736643314361572,
+            "y_max": 6.584195137023926,
+            "y_min": 5.3734846115112305,
+            "z": -1.6343538761138916
+          },
+          {
+            "depth": 1.2237844467163086,
+            "distance": 9.625147819519043,
+            "height": 1.6905219554901123,
+            "num_points": 250,
+            "width": 1.2298188209533691,
+            "x": 7.6952714920043945,
+            "x_max": 8.582313537597656,
+            "x_min": 7.352494716644287,
+            "y": -5.781544208526611,
+            "y_max": -5.372060298919678,
+            "y_min": -6.595844745635986,
+            "z": -1.377325415611267
+          }
+        ],
+        "sensor": "rs_lidar_16",
+        "timestamp": 1791565705.8473117
+      },
+      "ground_optical_height_m": 2.336180850017653,
+      "ground_plane_rmse_m": 0.004625775915120786,
+      "measured_imu_world_height_m": 0.9999997615814209,
+      "imu_gravity_expected": {
+        "ax": 0.006439834493438599,
+        "ay": -0.0020444433800197266,
+        "az": 9.809997673230251
+      },
+      "ground_plane_coefficients": [
+        -0.0007941825632120092,
+        -0.0001476296699184671,
+        -2.336180850017653
+      ],
+      "cloud_points": 13865,
+      "gyro_integrated_yaw_rad": 0.3013537735978249,
+      "pose_yaw_delta_rad": 0.30483206431108556,
+      "final_speed_mps": 0.0,
+      "initial_pose": {
+        "enu_ref": {
+          "alt": 0.0,
+          "lat": 0.0,
+          "lon": 0.0
+        },
+        "orientation": {
+          "pitch": -0.000656456162687391,
+          "roll": -0.00020840406068600714,
+          "yaw": 6.020171099407889e-07
+        },
+        "position": {
+          "x": -1.4230449199676514,
+          "y": -0.00017800023488234729,
+          "z": -0.0009636201430112123
+        },
+        "sensor": "awsim_truth",
+        "sim_time": 7.919994387755102,
+        "status": "converged",
+        "timestamp": 1791565705.8465405,
+        "timestamp_parede": 1791565705.8465405,
+        "uncertainty": {
+          "position": 0.05000000074505806
+        },
+        "velocity": {
+          "vx": 0.0,
+          "vy": 0.0,
+          "vz": 0.0
+        }
+      }
+    },
+    "jido-shuttle-city-sensors-check": {
+      "passed": true,
+      "city": true,
+      "geometry": {
+        "pose_frame": "rear_axle_ground",
+        "rear_axle_offset_m": 1.4236033,
+        "lidar_mount_height_m": 2.3,
+        "lidar_optical_height_m": 2.3377,
+        "imu_height_m": 1,
+        "imu_forward_of_rear_axle_m": 1.4236033,
+        "lidar_forward_of_rear_axle_m": 1.4236033,
+        "imu_axes": "x_forward_y_left_z_up_specific_force",
+        "lidar_axes": "x_forward_y_left_z_up_sensor_origin"
+      },
+      "counts": {
+        "imu": 535,
+        "pose": 298,
+        "cloud": 177,
+        "obstacles": 168
+      },
+      "rear_reference_error_m": 4.373838115382201e-06,
+      "rear_contact_error_m": 0.0009779924302492317,
+      "imu_rest_mean": {
+        "ax": 0.11684256047010422,
+        "ay": -0.075358085334301,
+        "az": 9.809015274047852,
+        "wx": 0.0,
+        "wy": 0.0,
+        "wz": 0.0
+      },
+      "imu_gravity_error_mps2": 5.948883934404821e-07,
+      "measured_lidar_world_height_m": 2.3374651670455933,
+      "floor_points": 1230,
+      "measured_imu_world_height_m": 0.9998995661735535,
+      "imu_gravity_expected": {
+        "ax": 0.11684254962962774,
+        "ay": -0.07535808160167565,
+        "az": 9.80901467926995
+      },
+      "ground_plane_coefficients": [
+        -0.0075720650473995454,
+        0.010149301373635605,
+        -2.2889945064162145
+      ],
+      "ground_optical_height_m": 2.2889945064162145,
+      "ground_plane_rmse_m": 0.009273531907324726,
+      "cloud_points": 27275,
+      "measured_target_errors_m": [],
+      "static_obstacles": {
+        "fwd_cru_m": -1.0,
+        "fwd_cru_pts": 0,
+        "fwd_cru_volta_anterior": false,
+        "num_obstacles": 9,
+        "obstacles": [
+          {
+            "depth": 3.43743896484375,
+            "distance": 5.4647417068481445,
+            "height": 1.8896465301513672,
+            "num_points": 3419,
+            "width": 17.891510009765625,
+            "x": 2.9807631969451904,
+            "x_max": 14.503448486328125,
+            "x_min": -3.3880615234375,
+            "y": 4.58022403717041,
+            "y_max": 4.988420486450195,
+            "y_min": 1.5509815216064453,
+            "z": -1.1097149848937988
+          },
+          {
+            "depth": 0.16129684448242188,
+            "distance": 3.5070385932922363,
+            "height": 0.522153377532959,
+            "num_points": 74,
+            "width": 0.170928955078125,
+            "x": 2.749422311782837,
+            "x_max": 2.8487548828125,
+            "x_min": 2.677825927734375,
+            "y": 2.1771535873413086,
+            "y_max": 2.273672103881836,
+            "y_min": 2.112375259399414,
+            "z": -0.6836046576499939
+          },
+          {
+            "depth": 0.08105087280273438,
+            "distance": 2.6848249435424805,
+            "height": 0.3041386604309082,
+            "num_points": 21,
+            "width": 0.043182373046875,
+            "x": -1.2051072120666504,
+            "x_max": -1.184326171875,
+            "x_min": -1.227508544921875,
+            "y": 2.3991668224334717,
+            "y_max": 2.436420440673828,
+            "y_min": 2.3553695678710938,
+            "z": -0.5651520490646362
+          },
+          {
+            "depth": 9.17123794555664,
+            "distance": 13.238226890563965,
+            "height": 0.17806410789489746,
+            "num_points": 216,
+            "width": 4.839996337890625,
+            "x": -11.654047012329102,
+            "x_max": -9.13861083984375,
+            "x_min": -13.978607177734375,
+            "y": 6.279634952545166,
+            "y_max": 10.817373275756836,
+            "y_min": 1.6461353302001953,
+            "z": -2.1413381099700928
+          },
+          {
+            "depth": 1.251749038696289,
+            "distance": 14.68704891204834,
+            "height": 1.0678191184997559,
+            "num_points": 76,
+            "width": 0.733001708984375,
+            "x": -12.538703918457031,
+            "x_max": -12.37835693359375,
+            "x_min": -13.111358642578125,
+            "y": 7.6478962898254395,
+            "y_max": 8.401891708374023,
+            "y_min": 7.150142669677734,
+            "z": -1.2620590925216675
+          },
+          {
+            "depth": 1.5059242248535156,
+            "distance": 10.614508628845215,
+            "height": 1.6964950561523438,
+            "num_points": 1081,
+            "width": 9.678253173828125,
+            "x": 2.0703136920928955,
+            "x_max": 7.2763671875,
+            "x_min": -2.401885986328125,
+            "y": -10.410648345947266,
+            "y_max": -10.258224487304688,
+            "y_min": -11.764148712158203,
+            "z": -1.2812092304229736
+          },
+          {
+            "depth": 0.3833808898925781,
+            "distance": 8.003615379333496,
+            "height": 0.7182061672210693,
+            "num_points": 88,
+            "width": 3.605621337890625,
+            "x": 2.221446990966797,
+            "x_max": 4.065887451171875,
+            "x_min": 0.46026611328125,
+            "y": -7.689149856567383,
+            "y_max": -7.458972930908203,
+            "y_min": -7.842353820800781,
+            "z": -1.8648310899734497
+          },
+          {
+            "depth": 0.3762245178222656,
+            "distance": 9.869757652282715,
+            "height": 1.7381572723388672,
+            "num_points": 87,
+            "width": 1.98822021484375,
+            "x": 6.038655757904053,
+            "x_max": 7.076446533203125,
+            "x_min": 5.088226318359375,
+            "y": -7.806839942932129,
+            "y_max": -7.602001190185547,
+            "y_min": -7.9782257080078125,
+            "z": -1.2502137422561646
+          },
+          {
+            "depth": 0.23479461669921875,
+            "distance": 11.096500396728516,
+            "height": 1.622450351715088,
+            "num_points": 31,
+            "width": 0.702545166015625,
+            "x": 7.8351359367370605,
+            "x_max": 8.37103271484375,
+            "x_min": 7.668487548828125,
+            "y": -7.857669830322266,
+            "y_max": -7.7330780029296875,
+            "y_min": -7.967872619628906,
+            "z": -1.5279481410980225
+          }
+        ],
+        "sensor": "rs_lidar_16",
+        "timestamp": 1791565880.2570143
+      },
+      "gyro_integrated_yaw_rad": 0.08858942433214027,
+      "pose_yaw_delta_rad": 0.08844268321990968,
+      "final_speed_mps": 0.0,
+      "initial_pose": {
+        "enu_ref": {
+          "alt": 42.499881744384766,
+          "lat": 35.68804844850089,
+          "lon": 139.692093878637
+        },
+        "orientation": {
+          "pitch": -0.011910837143659592,
+          "roll": -0.007682382129132748,
+          "yaw": 0.5955445170402527
+        },
+        "position": {
+          "x": -279.8122253417969,
+          "y": -221.33447265625,
+          "z": -1.2880487442016602
+        },
+        "sensor": "awsim_truth",
+        "sim_time": 6.839995153061224,
+        "status": "converged",
+        "timestamp": 1791565880.3608224,
+        "timestamp_parede": 1791565880.3608224,
+        "uncertainty": {
+          "position": 0.05000000074505806
+        },
+        "velocity": {
+          "vx": 0.0,
+          "vy": 0.0,
+          "vz": 0.0
+        }
+      }
+    },
+    "jido-shinjuku-route-check": {
+      "passed": true,
+      "length_m": 7.9999830978429785,
+      "waypoints": 9,
+      "maximum_core_projection_error_m": 2.4592675167755297e-09,
+      "maximum_cross_slope": 0.010320931673049927,
+      "surfaces": [
+        "P01_Facets_Index_Geo01"
+      ],
+      "survey": {
+        "lat": 35.68804844850089,
+        "lon": 139.692093878637,
+        "alt": 42.499881744384766,
+        "points": [
+          {
+            "x": -276.9041748046875,
+            "y": -225.09426879882812,
+            "z": -1.28924560546875
+          },
+          {
+            "x": -276.0838623046875,
+            "y": -224.5223388671875,
+            "z": -1.2832183837890625
+          },
+          {
+            "x": -275.2635803222656,
+            "y": -223.950439453125,
+            "z": -1.26959228515625
+          },
+          {
+            "x": -274.44329833984375,
+            "y": -223.37847900390625,
+            "z": -1.252471923828125
+          },
+          {
+            "x": -273.6230163574219,
+            "y": -222.80654907226562,
+            "z": -1.2353363037109375
+          },
+          {
+            "x": -272.80267333984375,
+            "y": -222.23460388183594,
+            "z": -1.221466064453125
+          },
+          {
+            "x": -271.982421875,
+            "y": -221.6626739501953,
+            "z": -1.2155914306640625
+          },
+          {
+            "x": -271.1620788574219,
+            "y": -221.09072875976562,
+            "z": -1.2078857421875
+          },
+          {
+            "x": -270.341796875,
+            "y": -220.518798828125,
+            "z": -1.2001800537109375
+          }
+        ],
+        "surfaces": [
+          "P01_Facets_Index_Geo01",
+          "P01_Facets_Index_Geo01",
+          "P01_Facets_Index_Geo01",
+          "P01_Facets_Index_Geo01",
+          "P01_Facets_Index_Geo01",
+          "P01_Facets_Index_Geo01",
+          "P01_Facets_Index_Geo01",
+          "P01_Facets_Index_Geo01",
+          "P01_Facets_Index_Geo01"
+        ],
+        "crossSlope": [
+          0.0068468921817839146,
+          0.008742435835301876,
+          0.010098323225975037,
+          0.010320931673049927,
+          0.007534954231232405,
+          0.0026510627940297127,
+          0.0012547014048323035,
+          0.001059075933881104,
+          0.0011872444301843643
+        ]
+      },
+      "map_alignment": {
+        "utmZone": 54,
+        "north": true,
+        "utmEasting": 381655.72655,
+        "utmNorthing": 3950137.42965,
+        "lat": 35.68804844850089,
+        "lon": 139.692093878637,
+        "alt": 42.499881744384766,
+        "unityYawDeg": -0.7630841539762511,
+        "horizontalScale": 1.000234140610875,
+        "validationRadiusM": 1000.0,
+        "maximumHorizontalErrorM": 0.002920273762332748
+      },
+      "scope": "Simulator route alignment with local UTM-to-ENU rotation/scale, not a surveyed real-world route or autonomous-driving result."
+    },
+    "jido-shinjuku-core-check": {
+      "passed": true,
+      "speed_limit_mps": 0.6,
+      "geofence_radius_m": 400,
+      "route": "routes/jido-shinjuku-8m.geojson",
+      "initial": {
+        "x": -276.9041748046875,
+        "y": -225.09423828125,
+        "z": -1.288068413734436
+      },
+      "start_error_m": 3.0517578125e-05,
+      "initial_heading_error_rad": -3.0211723189843553e-07,
+      "final": {
+        "x": -270.7818603515625,
+        "y": -220.67974853515625,
+        "z": -1.2019351720809937
+      },
+      "states": [
+        "ARRIVED",
+        "IDLE",
+        "NAVIGATING"
+      ],
+      "distance_m": 7.547877448747438,
+      "target_error_m": 0.4685730162927857,
+      "final_speed_mps": 0.0,
+      "maximum_speed_mps": 0.40375291789868195
+    },
+    "jido-shuttle-maneuvers-check": {
+      "passed": true,
+      "cases": [
+        {
+          "mode": "left",
+          "passed": true,
+          "speed_limit_mps": 0.6,
+          "emergency_distance_m": 3.0,
+          "states": [
+            "ARRIVED",
+            "IDLE",
+            "NAVIGATING"
+          ],
+          "initial": {
+            "enu_ref": {
+              "alt": 0.0,
+              "lat": 0.0,
+              "lon": 0.0
+            },
+            "orientation": {
+              "pitch": -0.000656456162687391,
+              "roll": -0.00020840406068600714,
+              "yaw": 6.020171099407889e-07
+            },
+            "position": {
+              "x": -1.4230449199676514,
+              "y": -0.00017800023488234729,
+              "z": -0.0009636201430112123
+            },
+            "sensor": "awsim_truth",
+            "sim_time": 5.2799962585034015,
+            "status": "converged",
+            "timestamp": 1791567858.804634,
+            "timestamp_parede": 1791567858.804634,
+            "uncertainty": {
+              "position": 0.05000000074505806
+            },
+            "velocity": {
+              "vx": 0.0,
+              "vy": 0.0,
+              "vz": 0.0
+            }
+          },
+          "final": {
+            "time": 1290481.763734582,
+            "position": {
+              "x": 5.467494010925293,
+              "y": 2.77248477935791,
+              "z": 0.01517594326287508
+            },
+            "yaw": 0.755439043045044,
+            "speed": 0.0
+          },
+          "distance_m": 7.427461588422421,
+          "yaw_change_rad": 0.755438441027934,
+          "maximum_speed_mps": 0.535467281708391,
+          "minimum_grounded_wheels": 4,
+          "barrier_contact": false,
+          "lidar_barrier_detected": false,
+          "target_error_m": 0.38450382776572056,
+          "maximum_radial_error_m": 0.014309587209737629
+        },
+        {
+          "mode": "right",
+          "passed": true,
+          "speed_limit_mps": 0.6,
+          "emergency_distance_m": 3.0,
+          "states": [
+            "ARRIVED",
+            "IDLE",
+            "NAVIGATING"
+          ],
+          "initial": {
+            "enu_ref": {
+              "alt": 0.0,
+              "lat": 0.0,
+              "lon": 0.0
+            },
+            "orientation": {
+              "pitch": -0.000656456162687391,
+              "roll": -0.00020840406068600714,
+              "yaw": 6.020171099407889e-07
+            },
+            "position": {
+              "x": -1.4230449199676514,
+              "y": -0.00017800023488234729,
+              "z": -0.0009636201430112123
+            },
+            "sensor": "awsim_truth",
+            "sim_time": 5.579996045918367,
+            "status": "converged",
+            "timestamp": 1791567892.5463524,
+            "timestamp_parede": 1791567892.5463524,
+            "uncertainty": {
+              "position": 0.05000000074505806
+            },
+            "velocity": {
+              "vx": 0.0,
+              "vy": 0.0,
+              "vz": 0.0
+            }
+          },
+          "final": {
+            "time": 1290515.441549576,
+            "position": {
+              "x": 5.482040882110596,
+              "y": -2.78530216217041,
+              "z": 0.015146245248615742
+            },
+            "yaw": -0.7565689086914062,
+            "speed": 0.0
+          },
+          "distance_m": 7.445611226182822,
+          "yaw_change_rad": -0.7565695107085161,
+          "maximum_speed_mps": 0.5343853265977307,
+          "minimum_grounded_wheels": 4,
+          "barrier_contact": false,
+          "lidar_barrier_detected": false,
+          "target_error_m": 0.3653585868434177,
+          "maximum_radial_error_m": 0.01383913964215644
+        },
+        {
+          "mode": "obstacle",
+          "passed": true,
+          "speed_limit_mps": 0.6,
+          "emergency_distance_m": 3.0,
+          "states": [
+            "AVOIDING_OBSTACLE",
+            "IDLE",
+            "NAVIGATING"
+          ],
+          "initial": {
+            "enu_ref": {
+              "alt": 0.0,
+              "lat": 0.0,
+              "lon": 0.0
+            },
+            "orientation": {
+              "pitch": -0.000656456162687391,
+              "roll": -0.00020840406068600714,
+              "yaw": 6.020171099407889e-07
+            },
+            "position": {
+              "x": -1.4230449199676514,
+              "y": -0.00017800023488234729,
+              "z": -0.0009636201430112123
+            },
+            "sensor": "awsim_truth",
+            "sim_time": 5.399996173469387,
+            "status": "converged",
+            "timestamp": 1791567926.2113504,
+            "timestamp_parede": 1791567926.2113504,
+            "uncertainty": {
+              "position": 0.05000000074505806
+            },
+            "velocity": {
+              "vx": 0.0,
+              "vy": 0.0,
+              "vz": 0.0
+            }
+          },
+          "final": {
+            "time": 1290539.204161411,
+            "position": {
+              "x": -0.21160805225372314,
+              "y": -0.0001727799535728991,
+              "z": 0.01442768331617117
+            },
+            "yaw": -9.103332558879629e-07,
+            "speed": 0.0
+          },
+          "distance_m": 1.2114368677251757,
+          "yaw_change_rad": -1.512350365828752e-06,
+          "maximum_speed_mps": 0.5045241713533923,
+          "minimum_grounded_wheels": 4,
+          "barrier_contact": false,
+          "lidar_barrier_detected": true,
+          "minimum_body_clearance_m": 4.342052845581218,
+          "detection_pose": {
+            "time": 1290534.164327117,
+            "position": {
+              "x": -0.37288200855255127,
+              "y": -0.00018008114420808852,
+              "z": -0.00139382213819772
+            },
+            "yaw": 5.409811819845345e-06,
+            "speed": 0.49851301312496865
+          }
+        }
+      ]
+    }
+  }
+}

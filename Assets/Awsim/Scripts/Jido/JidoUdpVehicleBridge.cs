@@ -116,6 +116,7 @@ namespace Awsim.Jido
         [SerializeField] private int commandPort = 25011;
         [SerializeField] private int commandTimeoutMs = 500;
         [SerializeField] private float poseHz = 20f;
+        [SerializeField, Min(0f)] private float initialSettlingSeconds;
 
         [Header("Map and vehicle profile; calibrate before route tests")]
         [SerializeField] private double enuReferenceLatitude;
@@ -129,6 +130,7 @@ namespace Awsim.Jido
         private double lastCommandWallTime;
         private double nextPoseTime;
         private ControlPacket latestControl;
+        private double settlingUntil;
 
         private void Start()
         {
@@ -159,6 +161,7 @@ namespace Awsim.Jido
             latestControl = new ControlPacket { kind = "control", brake = 1f };
             lastCommandWallTime = double.NegativeInfinity;
             vehicle.Initialize();
+            settlingUntil = Time.timeAsDouble + initialSettlingSeconds;
             imu.OnOutput += PublishImu;
             imu.Initialize();
             ApplyControl();
@@ -199,7 +202,8 @@ namespace Awsim.Jido
         {
             if (receiver == null) return;
             ApplyControl();
-            vehicle.OnFixedUpdate();
+            // Let native suspension settle before the controller freezes a stopped body.
+            if (Time.timeAsDouble >= settlingUntil) vehicle.OnFixedUpdate();
             imu.OnFixedUpdate();
             if (Time.timeAsDouble >= nextPoseTime)
             {
@@ -226,8 +230,10 @@ namespace Awsim.Jido
         {
             var rearAxle = vehicle.transform.position -
                            vehicle.transform.forward * vehicleOriginToRearAxleM;
-            var velocity = vehicleBody.linearVelocity;
+            var velocity = vehicleBody.GetPointVelocity(rearAxle);
             var forward = vehicle.transform.forward;
+            var right = vehicle.transform.right;
+            var up = vehicle.transform.up;
             var payload = new LocalizationPayload
             {
                 position = new Point3 { x = rearAxle.z, y = -rearAxle.x, z = rearAxle.y },
@@ -235,8 +241,8 @@ namespace Awsim.Jido
                 orientation = new Orientation3
                 {
                     yaw = Mathf.Atan2(-forward.x, forward.z),
-                    pitch = 0f,
-                    roll = 0f
+                    pitch = -Mathf.Asin(Mathf.Clamp(forward.y, -1f, 1f)),
+                    roll = Mathf.Atan2(-right.y, up.y)
                 },
                 enu_ref = new EnuReference
                 {
@@ -253,7 +259,10 @@ namespace Awsim.Jido
 
         private void PublishImu(ImuSensor.IReadOnlyOutputData data)
         {
-            var a = data.LinearAcceleration;
+            // AWSIM optionally adds downward gravity; JIDO/EKF expects specific
+            // force (upward +g at rest). Preserve real translational acceleration.
+            var gravity = imu.transform.InverseTransformDirection(Physics.gravity);
+            var a = data.LinearAcceleration - gravity * (imu.EnableGravity ? 2f : 1f);
             var w = data.AngularVelocity;
             // Angular velocity is an axial vector across the handedness change.
             Send(new ImuPacket

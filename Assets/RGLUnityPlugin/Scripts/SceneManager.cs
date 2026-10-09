@@ -53,6 +53,22 @@ namespace RGLUnityPlugin
         [SerializeField]
         private MeshSource meshSource = MeshSource.RegularMeshesAndSkinnedMeshes;
 
+        [SerializeField, Tooltip("Use the Unity simulation clock in scenes that do not initialize ROS 2.")]
+        private bool useUnitySimulationTime;
+        public bool UseUnitySimulationTime
+        {
+            get => useUnitySimulationTime;
+            set => useUnitySimulationTime = value;
+        }
+
+        [SerializeField, Tooltip("Optional hierarchy excluded from ray tracing, such as the sensor's own vehicle.")]
+        private Transform ignoredHierarchy;
+        public Transform IgnoredHierarchy
+        {
+            get => ignoredHierarchy;
+            set => ignoredHierarchy = value;
+        }
+
         [field: SerializeField, Tooltip("File to save dictionary for GameObjects and their SemanticCategories")]
         private string semanticCategoryDictionaryFile;
 
@@ -208,16 +224,16 @@ namespace RGLUnityPlugin
 
         private void SynchronizeSceneTime()
         {
-            // int seconds;
-            // uint nanoseconds;
-            // AWSIM.SimulatorROS2Node.TimeSource.GetTime(out seconds, out nanoseconds);
-            // UInt64 timeNs = (UInt64)(seconds * 1e9) + nanoseconds;
-            // RGLNativeAPI.CheckErr(RGLNativeAPI.rgl_scene_set_time(IntPtr.Zero, timeNs));
-
-            int seconds;
-            uint nanoseconds;
-            AwsimRos2Node.GetTime(out seconds, out nanoseconds);
-            UInt64 timeNs = (UInt64)(seconds * 1e9) + nanoseconds;
+            UInt64 timeNs;
+            if (useUnitySimulationTime)
+            {
+                timeNs = (UInt64)(Time.timeAsDouble * 1e9);
+            }
+            else
+            {
+                AwsimRos2Node.GetTime(out var seconds, out var nanoseconds);
+                timeNs = (UInt64)(seconds * 1e9) + nanoseconds;
+            }
             RGLNativeAPI.CheckErr(RGLNativeAPI.rgl_scene_set_time(IntPtr.Zero, timeNs));
         }
 
@@ -435,9 +451,11 @@ namespace RGLUnityPlugin
             foreach (var mr in mrs) yield return mr;
         }
 
-        private static bool IsNotActiveOrParentHasLidar(GameObject gameObject)
+        private bool IsNotActiveOrParentHasLidar(GameObject gameObject)
         {
             return !gameObject.activeInHierarchy ||
+                   (ignoredHierarchy != null &&
+                    (gameObject.transform == ignoredHierarchy || gameObject.transform.IsChildOf(ignoredHierarchy))) ||
                    gameObject.GetComponentsInParent<LidarSensor>().Length != 0 ||
                    gameObject.GetComponentsInParent<RadarSensor>().Length != 0;
         }

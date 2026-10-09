@@ -80,7 +80,9 @@ namespace Awsim.Common
             if (_timeConstant == 0f)
                 _currentValue = _desiredValue;
             else
-                _currentValue += (dt / _timeConstant) * (_desiredValue - _currentValue);
+                // Exact first-order step stays bounded even after a long idle
+                // interval, when this lazy getter has not been sampled.
+                _currentValue += (1f - Mathf.Exp(-dt / _timeConstant)) * (_desiredValue - _currentValue);
 
             _lastTime = Time.time;
         }
