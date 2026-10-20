@@ -1,0 +1,14 @@
+[data-md-color-scheme="slate"] {
+    /* header color */
+    --md-primary-fg-color: black;
+
+    /* background color */
+    --md-default-bg-color: rgb(13, 13, 15);
+
+    /* code block color */
+    --md-code-bg-color: rgb(25, 25, 30);
+
+    .md-button {
+        color: rgb(64, 81, 181);
+    }
+}

@@ -1,0 +1,66 @@
+{% extends "main.html" %}
+
+<!-- Render hero under tabs -->
+{% block tabs %}
+{{ super() }}
+
+<!-- Additional styles for landing page -->
+<style>
+  body {
+    background-color: black;
+    background-image: url("awsim-bg.png");
+    background-repeat: no-repeat;
+
+    background-size: cover;
+    background-position: top;
+  }
+
+  .title {
+    position: fixed;
+    bottom: 15%;
+    margin-left: 20px;
+
+    /* bottom: 10%; */
+  }
+
+  .button01 {
+    background-color: #ff3535;
+    color: #fff;
+    padding: 10px 30px;
+    text-decoration: none;
+    font-size: 1.4em;
+    position: absolute;
+    margin-top: 20px;
+  }
+
+  .button01:hover {
+    color: #fff;
+    opacity: 0.8;
+  }
+</style>
+
+{% endblock %}
+
+<!-- Content -->
+{% block container %}
+<div class="title">
+  <h1>
+    <font size="7" color="#FFFFFF">
+      <b>AWSIM</b>
+    </font>
+  </h1>
+  <font size="5" color="#FFFFFF">
+    Open sourced digital twin simulator for Autoware
+  </font>
+  <div class="button01">
+    <a href="https://autowarefoundation.github.io/AWSIM/GettingStarted/QuickStartDemo/">Quick start demo</a>
+  </div>
+</div>
+
+<!-- <a href="#" class="button01">Click here</a> -->
+
+{% endblock %}
+
+<!-- Application footer -->
+{% block footer %}
+{% endblock %}
